@@ -49,28 +49,32 @@ export function useModule(moduleId) {
       setLoading(true)
       setError(null)
       try {
-        const [modRes, simRes] = await Promise.all([
-          api.get(`/modules/${moduleId}`),
-          api.get(`/modules/${moduleId}/simulation`)
-        ])
-
-        // ModuleDetailResponse wraps: { module, simulation, concept_content }
+        // Fetch module detail (includes module + simulation + concept_content)
+        const modRes = await api.get(`/modules/${moduleId}`)
         const detail = modRes.data
         const rawModule = detail.module ?? detail
         setModule(normalizeModule(rawModule))
 
-        // Simulation: prefer the detail wrapper, fall back to direct sim endpoint
-        const rawSim = detail.simulation ?? simRes.data?.simulation ?? simRes.data
-        setSimulation(normalizeSimulation(rawSim))
+        // Simulation from detail response
+        const rawSim = detail.simulation ?? null
+        if (rawSim) {
+          setSimulation(normalizeSimulation(rawSim))
+        } else {
+          // Fallback: try direct simulation endpoint
+          try {
+            const simRes = await api.get(`/modules/${moduleId}/simulation`)
+            setSimulation(normalizeSimulation(simRes.data))
+          } catch {
+            setSimulation(null)
+          }
+        }
 
-        setConcept(
-          detail.concept_content ??
-          simRes.data?.concept_content ??
-          rawModule.concept_content ??
-          ''
-        )
+        // Concept content from detail response
+        setConcept(detail.concept_content ?? rawModule.concept_content ?? '')
       } catch (err) {
-        // Mock data fallback for development
+        console.error('Failed to load module:', err)
+        setError(err)
+        // Mock data fallback for development only
         setModule(getMockModule(moduleId))
         setSimulation(getMockSimulation(moduleId))
         setConcept(getMockConcept())
