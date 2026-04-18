@@ -1,5 +1,6 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import List, Union
+from pathlib import Path
 import os
 import json
 
@@ -26,11 +27,11 @@ class Settings(BaseSettings):
             pass
         return [s.strip() for s in str(self.CORS_ORIGINS).split(",") if s.strip()]
 
-    model_config = {
-        "env_file": ".env",
-        "env_file_encoding": "utf-8",
-        "extra": "ignore",
-    }
+    model_config = SettingsConfigDict(
+        env_file=".env" if Path(".env").exists() else None,
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
 
 settings = Settings()
