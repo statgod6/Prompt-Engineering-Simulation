@@ -1,0 +1,71 @@
+{
+  "id": "sim-02",
+  "title": "Prompt Autopsy",
+  "type": "fix_the_prompt",
+  "instructions": "Each test case gives you a broken or weak prompt and the poor output it produced. Your job is to diagnose the problem, then write an improved prompt that fixes the issues. Your improved prompt will be sent to the model, and the resulting output will be evaluated against the expected improvement criteria.\n\nFor each case:\n1. Read the weak prompt and its output\n2. Identify what's wrong (vague? missing format? contradictory?)\n3. Write a new, improved prompt that addresses the issues\n4. Your prompt should produce output that meets the specified criteria",
+  "default_model": "openai/gpt-4o",
+  "allowed_models": [
+    "openai/gpt-4o",
+    "anthropic/claude-3.5-sonnet",
+    "meta-llama/llama-3-70b-instruct",
+    "google/gemini-pro",
+    "mistralai/mistral-large"
+  ],
+  "test_cases": [
+    {
+      "id": "tc-02-01",
+      "title": "The Vague Request",
+      "weak_prompt": "Write about dogs",
+      "poor_output": "Dogs are wonderful animals. They have been human companions for thousands of years. There are many different breeds of dogs, from small Chihuahuas to large Great Danes. Dogs are loyal, friendly, and can be trained to do many things. Many people enjoy having dogs as pets because they provide companionship and love. Dogs need regular exercise, food, and veterinary care. They are truly man's best friend.",
+      "diagnosis_hint": "No specific topic, no audience, no format, no length constraint, no purpose",
+      "expected_criteria": "The improved prompt should produce output that: (1) focuses on a specific aspect of dogs, (2) targets a defined audience, (3) has a clear structure or format, (4) stays within a specified length, (5) serves a clear purpose (inform, persuade, entertain, etc.)",
+      "input": "Write a prompt about dogs that is specific, structured, and purposeful."
+    },
+    {
+      "id": "tc-02-02",
+      "title": "The Missing Format",
+      "weak_prompt": "Summarize this article about renewable energy trends in 2025 including solar panel efficiency improvements the growth of offshore wind farms new battery storage technologies government incentive programs and the impact on fossil fuel industries",
+      "poor_output": "Renewable energy saw significant developments in 2025. Solar panel efficiency improved with new perovskite-silicon tandem cells reaching 33% efficiency in commercial production. Offshore wind farms expanded dramatically, particularly in the North Sea and along the US East Coast, with floating turbine technology making deeper waters accessible. Battery storage made breakthroughs with solid-state batteries entering the grid-scale market, offering higher energy density and longer lifespans. Government incentives continued to drive adoption, with the EU's Green Deal Industrial Plan and US IRA providing substantial subsidies. These advances put increasing pressure on fossil fuel industries, with several major oil companies announcing accelerated transitions to renewable portfolios. The convergence of these trends suggests a tipping point in the global energy transition.",
+      "diagnosis_hint": "No structure — it's a wall of text. No bullet points, no headings, no clear organization despite having 5 distinct topics",
+      "expected_criteria": "The improved prompt should produce output that: (1) uses clear formatting (bullets, numbering, or headers), (2) separates the 5 topics visually, (3) keeps each section concise and scannable, (4) includes a brief intro or summary line",
+      "input": "Improve this prompt so the output about renewable energy trends is well-structured and scannable."
+    },
+    {
+      "id": "tc-02-03",
+      "title": "The Contradictory Mess",
+      "weak_prompt": "Write a comprehensive and detailed technical analysis of quantum computing in 2 sentences. Include extensive examples and keep it as brief as possible. Use highly formal academic language but make it fun and accessible for children.",
+      "poor_output": "Quantum computing, leveraging quantum mechanical phenomena such as superposition and entanglement, represents a paradigm shift in computational capability, with applications ranging from cryptographic analysis to molecular simulation. It's kind of like having a super-powered calculator that can think about lots of things at once!",
+      "diagnosis_hint": "Contradictory requirements: detailed AND 2 sentences, formal AND fun for children, comprehensive AND brief",
+      "expected_criteria": "The improved prompt should: (1) pick ONE audience (either technical or children), (2) set a consistent tone, (3) give a realistic length that matches the depth requested, (4) remove contradictory instructions",
+      "input": "Fix this contradictory prompt about quantum computing. Choose a clear audience and consistent requirements."
+    },
+    {
+      "id": "tc-02-04",
+      "title": "The No-Context Code Request",
+      "weak_prompt": "Give me code",
+      "poor_output": "```python\nprint('Hello, World!')\n```\n\nHere's a simple Python program that prints 'Hello, World!' to the console. This is typically the first program written when learning a new programming language.",
+      "diagnosis_hint": "No language specified, no task, no requirements, no constraints, no context about what the code should do",
+      "expected_criteria": "The improved prompt should produce output that: (1) specifies a programming language, (2) describes a concrete function or program, (3) includes input/output expectations, (4) mentions error handling or edge cases, (5) specifies any constraints (no external libraries, performance requirements, etc.)",
+      "input": "Write a specific, complete code generation prompt with clear requirements."
+    },
+    {
+      "id": "tc-02-05",
+      "title": "The Lost Translation",
+      "weak_prompt": "Translate this",
+      "poor_output": "I'd be happy to help with a translation! However, I need a bit more information:\n\n1. What text would you like me to translate?\n2. What is the source language?\n3. What is the target language?\n\nPlease provide these details and I'll translate it for you.",
+      "diagnosis_hint": "No source text, no source language, no target language, no context about register or style",
+      "expected_criteria": "The improved prompt should: (1) include the actual text to translate, (2) specify source and target languages, (3) indicate the desired register (formal/informal), (4) mention how to handle untranslatable terms or cultural references, (5) provide context about the text's purpose",
+      "input": "Write a complete translation prompt that includes all necessary information."
+    }
+  ],
+  "scoring": {
+    "methods": ["llm_judge"],
+    "pass_threshold": 0.7,
+    "dimensions": ["accuracy", "format_compliance"]
+  },
+  "constraints": {
+    "max_tokens": 1024,
+    "time_limit_seconds": null,
+    "max_attempts": null
+  }
+}

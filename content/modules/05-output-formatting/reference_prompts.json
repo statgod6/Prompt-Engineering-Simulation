@@ -1,0 +1,20 @@
+{
+  "module_id": "05-output-formatting",
+  "simulation_id": "sim-05",
+  "reference_prompts": [
+    {
+      "id": "ref-05-optimal",
+      "label": "Optimal Schema Enforcement Prompt",
+      "prompt": "You are a product data extraction API. Given a product description, extract information and return ONLY a valid JSON object — no markdown, no explanation, no code blocks.\n\nRequired schema (follow EXACTLY):\n{\n  \"name\": \"<product name, string>\",\n  \"category\": \"<one of: electronics, clothing, food, books, home, sports, beauty, toys, automotive, health>\",\n  \"price\": <number in USD, no currency symbol, no commas>,\n  \"features\": [\"<feature 1>\", \"<feature 2>\", ...],\n  \"rating\": <number between 1.0 and 5.0, one decimal place>,\n  \"in_stock\": <true or false>\n}\n\nRules:\n- \"price\" must be a NUMBER, not a string. If a sale price exists, use the sale price.\n- \"features\" must be an ARRAY of 4-6 concise strings summarizing key features.\n- \"rating\" must be a NUMBER rounded to one decimal place.\n- \"in_stock\" must be a BOOLEAN. Set to false if the product is discontinued, retired, out of stock, or unavailable.\n- \"category\" must be exactly one of the allowed values.\n- Include ALL six fields. Never omit a field.\n- Output raw JSON only. No text before or after.\n\nProduct description:\n{{input}}",
+      "strategy": "This prompt uses several schema enforcement techniques: (1) Role assignment as an API to suppress conversational output, (2) Exact schema with type annotations, (3) Explicit rules for edge cases (sale price, discontinued items), (4) Negative constraints (no markdown, no explanation), (5) Explicit type reminders (NUMBER not string, BOOLEAN not string).",
+      "expected_score": 0.95
+    },
+    {
+      "id": "ref-05-minimal",
+      "label": "Minimal Prompt (for comparison)",
+      "prompt": "Extract product info from this description and return it as JSON with fields: name, category, price, features, rating, in_stock.\n\n{{input}}",
+      "strategy": "This minimal prompt will likely work for simple cases but fail on edge cases: it may wrap output in code blocks, use strings instead of numbers, or omit fields for ambiguous inputs.",
+      "expected_score": 0.5
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "ref-16",
+  "title": "Evaluation Suite Structure and Rubric Example",
+  "description": "A reference example showing how to structure an evaluation suite with detailed rubrics and benchmark comparison methodology.",
+  "prompts": [
+    {
+      "id": "ref-16-01",
+      "label": "Eval Suite Config",
+      "context": "The top-level configuration for a 50-case evaluation suite, showing metadata, category distribution, and scoring weights.",
+      "prompt": "{\n  \"suite_name\": \"product_description_eval_v2\",\n  \"version\": \"2.0.0\",\n  \"description\": \"Evaluation suite for product description generator\",\n  \"category_distribution\": {\n    \"standard\": 25,\n    \"edge_case\": 10,\n    \"adversarial\": 5,\n    \"diversity\": 5,\n    \"minimal_input\": 5\n  },\n  \"scoring_weights\": {\n    \"accuracy\": 0.30,\n    \"persuasiveness\": 0.25,\n    \"format_compliance\": 0.25,\n    \"completeness\": 0.20\n  },\n  \"pass_threshold\": 0.70,\n  \"judge_model\": \"anthropic/claude-3.5-sonnet\",\n  \"runs_per_case\": 3,\n  \"statistical_test\": \"paired_t_test\",\n  \"significance_level\": 0.05\n}",
+      "explanation": "The config defines category distribution ensuring diverse coverage, weighted scoring dimensions, and statistical methodology for comparing variants."
+    },
+    {
+      "id": "ref-16-02",
+      "label": "Detailed Scoring Rubric",
+      "context": "A comprehensive rubric that an LLM judge uses to score product description outputs on a 1-5 scale across four dimensions.",
+      "prompt": "You are an expert evaluator for e-commerce product descriptions. Score the following output on each dimension using a 1-5 scale.\n\n## Accuracy (Weight: 30%)\n1 — Contains fabricated specs, wrong price, or incorrect brand name\n2 — Mostly correct but includes 1-2 inaccuracies or unsupported claims\n3 — All stated facts are correct, but generic (could apply to any similar product)\n4 — Accurate with product-specific details that differentiate it\n5 — Perfectly accurate, highlights unique selling points, no unsupported claims\n\n## Persuasiveness (Weight: 25%)\n1 — Reads like a raw spec sheet with no appeal\n2 — Slightly engaging but mostly flat, factual listing\n3 — Moderately persuasive, identifies a benefit but doesn't compel action\n4 — Compelling narrative connecting features to customer needs, has a hook\n5 — Irresistible copy that creates urgency/desire, perfect audience targeting\n\n## Format Compliance (Weight: 25%)\n1 — No recognizable structure, wall of text\n2 — Has some structure but missing required sections\n3 — Has headline, description, and features but formatting is inconsistent\n4 — Follows headline → description → bullet features with minor deviations\n5 — Perfect structure: catchy headline, 2-3 sentence hook, clean bullet features\n\n## Completeness (Weight: 20%)\n1 — Mentions fewer than 30% of provided product details\n2 — Covers 30-50% of provided details\n3 — Covers 50-70% of provided details\n4 — Covers 70-90% of provided details, may miss minor attributes\n5 — Incorporates 100% of provided product data naturally\n\n## Input\n{input}\n\n## Output to Evaluate\n{output}\n\nRespond in JSON:\n{\n  \"accuracy\": {\"score\": <1-5>, \"reasoning\": \"<explanation>\"},\n  \"persuasiveness\": {\"score\": <1-5>, \"reasoning\": \"<explanation>\"},\n  \"format_compliance\": {\"score\": <1-5>, \"reasoning\": \"<explanation>\"},\n  \"completeness\": {\"score\": <1-5>, \"reasoning\": \"<explanation>\"},\n  \"weighted_score\": <float 0-1>,\n  \"pass\": <true|false>\n}",
+      "explanation": "This rubric provides explicit 1-5 anchor definitions for each dimension, making LLM-as-judge scoring consistent and reproducible. Weights sum to 100% and the pass threshold converts the 5-point scale to a 0-1 normalized score."
+    },
+    {
+      "id": "ref-16-03",
+      "label": "Three Benchmark Prompt Variants",
+      "context": "Three prompt variants designed to be benchmarked against each other using the eval suite.",
+      "prompt": "VARIANT A — Basic:\n\"Write a product description for this item: {product_data}\"\n\nVARIANT B — Structured:\n\"Write a product description for the following item. Your description must include:\n1. A catchy headline (max 10 words)\n2. A 2-3 sentence description highlighting the main value proposition\n3. A bullet list of 3-5 key features with benefits\n\nProduct data: {product_data}\"\n\nVARIANT C — Expert Persona + Structured:\n\"You are a senior e-commerce copywriter with 10 years of experience writing high-converting product descriptions for Amazon, Shopify, and DTC brands. Your descriptions consistently achieve above-average click-through and conversion rates.\n\nWrite a product description for the following item. Your description must include:\n1. A catchy, benefit-driven headline (max 10 words)\n2. A 2-3 sentence description that connects features to the target audience's needs\n3. A bullet list of 3-5 key features, each formatted as: Feature → Benefit\n\nTarget audience: {audience}\nProduct data: {product_data}\"",
+      "explanation": "Variant A tests the baseline with no structure guidance. Variant B adds explicit format requirements. Variant C adds an expert persona and audience-aware targeting. Expected results: A scores lowest on format, B improves format dramatically, C adds persuasiveness on top of format. This progression demonstrates the cumulative value of prompt engineering techniques."
+    }
+  ]
+}

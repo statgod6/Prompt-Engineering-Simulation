@@ -1,0 +1,119 @@
+{
+  "id": "sim-10",
+  "title": "Trust but Verify",
+  "type": "pipeline",
+  "instructions": "Build a 3-step pipeline: (1) Generate 3 different answers to a question using temperature 0.8, (2) Write a verification prompt that evaluates and picks the best answer, (3) Compare the selected answer against the ground truth. Your generation prompt should instruct the model to solve the problem step by step. Your verification prompt should analyze each candidate answer, check for errors, and select the most accurate one. The final comparison step checks your pipeline's selected answer against the known correct answer.",
+  "default_model": "openai/gpt-4o",
+  "allowed_models": [
+    "openai/gpt-4o",
+    "anthropic/claude-3.5-sonnet",
+    "meta-llama/llama-3-70b-instruct",
+    "google/gemini-pro",
+    "mistralai/mistral-large"
+  ],
+  "pipeline_steps": [
+    {
+      "step": 1,
+      "name": "generate_candidates",
+      "description": "Generate 3 different answers to the question using temperature 0.8. Each answer should include step-by-step reasoning.",
+      "temperature": 0.8,
+      "n_completions": 3
+    },
+    {
+      "step": 2,
+      "name": "verify_and_select",
+      "description": "Write a verification prompt that receives all 3 candidate answers, evaluates each for correctness, and selects the best one.",
+      "temperature": 0.0,
+      "n_completions": 1
+    },
+    {
+      "step": 3,
+      "name": "compare_to_ground_truth",
+      "description": "Compare the selected answer from step 2 against the ground truth to determine if the pipeline produced the correct result.",
+      "temperature": 0.0,
+      "n_completions": 1
+    }
+  ],
+  "test_cases": [
+    {
+      "id": "tc-10-01",
+      "input": "A store sells notebooks for $3.50 each. If you buy 5 or more, you get a 20% discount. Sarah buys 7 notebooks and pays with a $50 bill. How much change does she receive?",
+      "expected_output": "30.40",
+      "ground_truth": "Sarah pays 7 × $3.50 × 0.80 = $19.60. Change from $50 is $30.40.",
+      "tags": ["arithmetic", "multi-step"]
+    },
+    {
+      "id": "tc-10-02",
+      "input": "If all roses are flowers, and some flowers fade quickly, can we conclude that some roses fade quickly?",
+      "expected_output": "No",
+      "ground_truth": "No. 'Some flowers fade quickly' does not guarantee that the ones fading are roses. This is the fallacy of the undistributed middle.",
+      "tags": ["logic", "syllogism"]
+    },
+    {
+      "id": "tc-10-03",
+      "input": "A train travels from City A to City B at 60 mph and returns at 40 mph. The cities are 120 miles apart. What is the average speed for the entire round trip?",
+      "expected_output": "48",
+      "ground_truth": "Total distance = 240 miles. Time there = 2h, time back = 3h, total = 5h. Average speed = 240/5 = 48 mph. (Not the arithmetic mean of 50.)",
+      "tags": ["arithmetic", "reasoning", "common-mistake"]
+    },
+    {
+      "id": "tc-10-04",
+      "input": "You have 12 balls, one of which is heavier than the rest. Using a balance scale, what is the minimum number of weighings needed to guarantee finding the heavy ball?",
+      "expected_output": "3",
+      "ground_truth": "Divide into 3 groups of 4. Weigh two groups. If balanced, heavy ball is in the third group. Repeat subdivision. Minimum 3 weighings.",
+      "tags": ["logic", "puzzle"]
+    },
+    {
+      "id": "tc-10-05",
+      "input": "A farmer has 100 meters of fencing and wants to enclose a rectangular area against a straight river (so only 3 sides need fencing). What dimensions maximize the enclosed area?",
+      "expected_output": "50m × 25m",
+      "ground_truth": "Let width = x, length = 100 - 2x. Area = x(100-2x). Maximize: dA/dx = 100 - 4x = 0, x = 25. Dimensions: 50m along river, 25m width. Area = 1250 sq meters.",
+      "tags": ["math", "optimization"]
+    },
+    {
+      "id": "tc-10-06",
+      "input": "Three friends split a dinner bill. The total is $147. They want to add an 18% tip and split everything equally. How much does each person pay?",
+      "expected_output": "57.82",
+      "ground_truth": "Bill with tip: $147 × 1.18 = $173.46. Per person: $173.46 / 3 = $57.82.",
+      "tags": ["arithmetic", "real-world"]
+    },
+    {
+      "id": "tc-10-07",
+      "input": "In a class of 30 students, 18 play basketball, 15 play soccer, and 10 play both. How many students play neither sport?",
+      "expected_output": "7",
+      "ground_truth": "Using inclusion-exclusion: |B ∪ S| = 18 + 15 - 10 = 23. Neither = 30 - 23 = 7.",
+      "tags": ["math", "set-theory"]
+    },
+    {
+      "id": "tc-10-08",
+      "input": "A clock shows 3:15. What is the angle between the hour and minute hands?",
+      "expected_output": "7.5",
+      "ground_truth": "Minute hand at 90°. Hour hand at 90° + 7.5° (it moves 0.5° per minute, 15 min past 3) = 97.5°. Angle between = 7.5°.",
+      "tags": ["math", "reasoning", "common-mistake"]
+    },
+    {
+      "id": "tc-10-09",
+      "input": "A bacteria colony doubles every 20 minutes. Starting with 1 bacterium, how many will there be after 3 hours?",
+      "expected_output": "512",
+      "ground_truth": "3 hours = 180 minutes. Number of doublings = 180/20 = 9. Total = 2^9 = 512.",
+      "tags": ["math", "exponential"]
+    },
+    {
+      "id": "tc-10-10",
+      "input": "Five people are in a room. Each person shakes hands with every other person exactly once. How many handshakes occur in total?",
+      "expected_output": "10",
+      "ground_truth": "C(5,2) = 5! / (2! × 3!) = 10 handshakes.",
+      "tags": ["math", "combinatorics"]
+    }
+  ],
+  "scoring": {
+    "methods": ["exact_match", "llm_judge"],
+    "pass_threshold": 0.6,
+    "dimensions": ["accuracy", "consistency"]
+  },
+  "constraints": {
+    "max_tokens": 1024,
+    "time_limit_seconds": null,
+    "max_attempts": null
+  }
+}

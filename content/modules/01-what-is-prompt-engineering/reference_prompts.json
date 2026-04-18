@@ -1,0 +1,37 @@
+[
+  {
+    "id": "ref-01-01",
+    "label": "Level 1 — Vague (Bad)",
+    "prompt": "Tell me about dogs",
+    "commentary": "This prompt gives the model zero direction. It could write about dog breeds, dog care, dog history, dog memes — anything. The output will be generic and unfocused.",
+    "temperature": 0.7
+  },
+  {
+    "id": "ref-01-02",
+    "label": "Level 2 — Slightly Better",
+    "prompt": "Write a paragraph about dogs as pets",
+    "commentary": "Slightly more focused — we've narrowed to 'pets' and specified 'paragraph'. But the model still doesn't know the audience, tone, or specific angle to take.",
+    "temperature": 0.7
+  },
+  {
+    "id": "ref-01-03",
+    "label": "Level 3 — Getting Specific",
+    "prompt": "Write a 150-word paragraph explaining why dogs make good pets for families with young children. Mention safety, companionship, and responsibility.",
+    "commentary": "Now we have a word count, a specific audience (families with young children), and three topics to cover. The output will be much more useful.",
+    "temperature": 0.7
+  },
+  {
+    "id": "ref-01-04",
+    "label": "Level 4 — Well-Structured",
+    "prompt": "You are a veterinarian writing for a parenting magazine. Write a 150-word paragraph explaining why dogs make good first pets for families with children ages 5-10. Cover three benefits: (1) teaching responsibility through feeding and walking schedules, (2) emotional support and companionship, (3) physical activity encouragement. Use a warm, reassuring tone. End with one practical tip for choosing a family-friendly breed.",
+    "commentary": "This prompt has a clear role (veterinarian), audience (parenting magazine readers), word count (150), structure (3 benefits + tip), specific age range, and tone. The output will be highly targeted and useful.",
+    "temperature": 0.7
+  },
+  {
+    "id": "ref-01-05",
+    "label": "Level 5 — Professional Grade",
+    "prompt": "You are Dr. Sarah Chen, a veterinarian with 15 years of experience in family pet counseling, writing a column for ParentLife Magazine.\n\nWrite a 150-word paragraph titled 'Why a Dog Might Be Your Family's Best Decision' for parents considering a first pet for children ages 5-10.\n\nCover exactly three benefits:\n1. Responsibility: Daily feeding and walking routines teach time management\n2. Emotional growth: Unconditional companionship builds empathy\n3. Health: Active play reduces screen time and improves fitness\n\nEnd with one actionable tip: recommend starting with breeds known for patience with children (Golden Retriever, Labrador, Beagle).\n\nTone: Warm, evidence-informed, reassuring. Avoid medical jargon.\nFormat: Single paragraph, no bullet points.\nDo NOT include disclaimers or caveats about allergies — that's covered in a separate article.",
+    "commentary": "This is a fully specified prompt. It defines the persona with depth, provides exact structure, specifies what NOT to include, sets tone precisely, and gives concrete examples. The model has almost no ambiguity to resolve on its own.",
+    "temperature": 0
+  }
+]

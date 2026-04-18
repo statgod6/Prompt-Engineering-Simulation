@@ -1,0 +1,85 @@
+{
+  "id": "sim-07",
+  "title": "The Pipeline Builder",
+  "type": "pipeline",
+  "instructions": "Decompose the task 'Analyze a company and produce an investment memo' into 4-6 chained prompts. Each prompt's output feeds into the next. Your pipeline should take raw company information as input and produce a polished investment memo as final output. Design each step to be focused on a single responsibility. The pipeline will be evaluated on the quality of the final memo and how well intermediate steps contribute to it.",
+  "default_model": "openai/gpt-4o",
+  "allowed_models": [
+    "openai/gpt-4o",
+    "anthropic/claude-3.5-sonnet",
+    "meta-llama/llama-3-70b-instruct",
+    "google/gemini-pro",
+    "mistralai/mistral-large"
+  ],
+  "test_cases": [
+    {
+      "id": "tc-07-01",
+      "input": "Company: TechFlow Analytics\nFounded: 2019\nHeadquarters: Austin, TX\nEmployees: 340\nIndustry: B2B SaaS — data analytics platform\n\nFinancials:\n- 2023 Revenue: $28M (up from $15M in 2022)\n- 2024 Revenue (projected): $52M\n- Gross Margin: 78%\n- Net Loss: -$8M (2023), improving from -$14M (2022)\n- Burn Rate: $1.2M/month\n- Cash on Hand: $35M (Series B raised $40M in Jan 2023)\n- CAC: $12,000, LTV: $85,000, LTV/CAC ratio: 7.1x\n- Net Revenue Retention: 135%\n\nProduct:\n- Self-serve analytics platform for mid-market companies\n- Natural language query interface (AI-powered)\n- Integrates with 50+ data sources (Salesforce, HubSpot, Snowflake, BigQuery, etc.)\n- Recently launched 'AutoInsights' — automated anomaly detection and alerting\n- SOC 2 Type II certified, HIPAA compliant\n\nCustomers:\n- 420 paying customers (up from 180 in 2022)\n- Notable: Shopify, DoorDash, Stripe, HubSpot (mid-market divisions)\n- 96% of customers are on annual contracts\n- Average contract value (ACV): $67,000\n- Churn rate: 4% annually\n\nTeam:\n- CEO: Sarah Chen (ex-Tableau VP Engineering, 15 years in analytics)\n- CTO: Marcus Rodriguez (ex-Google, built BigQuery Omni)\n- VP Sales: Jennifer Park (ex-Snowflake, built their mid-market team from 0 to $80M)\n- 120 engineers, 80 in sales/marketing, 40 in G&A\n- Glassdoor rating: 4.3/5, 89% would recommend to a friend\n\nMarket & Competition:\n- TAM: $45B (business intelligence and analytics)\n- Competitors: Tableau (Salesforce), Looker (Google), Power BI (Microsoft), ThoughtSpot, Domo\n- Differentiation: AI-native approach, 10x faster time-to-insight, self-serve (no SQL needed)\n- Market growing at 12% CAGR through 2028\n\nRisks:\n- Competition from well-funded incumbents (Tableau, Looker, Power BI)\n- Concentration risk: top 10 customers = 25% of revenue\n- Burn rate requires additional fundraising within 24 months\n- Key person risk on CTO (core AI architecture)\n- Regulatory uncertainty around AI/ML in data analytics\n\nRecent News:\n- Won 'Best AI Analytics Tool 2024' at SaaStr Annual\n- Partnership with Snowflake for native integration\n- Launched in EU market (Q2 2024), early traction with 30 customers\n- Rumored acquisition interest from Salesforce and Databricks",
+      "expected_output_rubric": {
+        "sections_required": [
+          "Company Overview / Executive Summary",
+          "Financial Analysis",
+          "Competitive Landscape",
+          "Risk Assessment",
+          "Investment Recommendation"
+        ],
+        "quality_criteria": [
+          "Uses specific numbers from the input (not generic statements)",
+          "Financial analysis includes unit economics evaluation (CAC, LTV, NRR)",
+          "Competitive positioning references specific competitors",
+          "Risk assessment is balanced (acknowledges both risks and mitigants)",
+          "Investment recommendation is clear with a specific thesis",
+          "Final output reads as a cohesive, professional memo",
+          "Reasoning is supported by data from the company description"
+        ],
+        "format": "Professional investment memo with clear section headers, data-driven analysis, and a clear BUY/PASS/WATCH recommendation"
+      },
+      "pipeline_steps": [
+        {
+          "step": 1,
+          "name": "Company Overview Extraction",
+          "description": "Extract and organize key company facts into a structured summary"
+        },
+        {
+          "step": 2,
+          "name": "Financial Analysis",
+          "description": "Analyze financial metrics, unit economics, growth trajectory, and financial health"
+        },
+        {
+          "step": 3,
+          "name": "Competitive Landscape",
+          "description": "Map competitive positioning, differentiation, moats, and market dynamics"
+        },
+        {
+          "step": 4,
+          "name": "Risk Assessment",
+          "description": "Identify, categorize, and assess severity of risks with potential mitigants"
+        },
+        {
+          "step": 5,
+          "name": "Investment Recommendation",
+          "description": "Synthesize all analyses into a clear investment thesis and recommendation"
+        },
+        {
+          "step": 6,
+          "name": "Format as Memo",
+          "description": "Compile everything into a polished, professional investment memo"
+        }
+      ],
+      "metadata": {
+        "difficulty": "hard",
+        "description": "Full company analysis pipeline — tests decomposition, data flow, and synthesis quality"
+      }
+    }
+  ],
+  "scoring": {
+    "methods": ["llm_judge"],
+    "pass_threshold": 0.7,
+    "dimensions": ["accuracy", "format_compliance", "efficiency"]
+  },
+  "constraints": {
+    "max_tokens": 1024,
+    "time_limit_seconds": null,
+    "max_attempts": null
+  }
+}

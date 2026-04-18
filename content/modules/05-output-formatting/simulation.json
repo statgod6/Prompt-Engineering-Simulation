@@ -1,0 +1,186 @@
+{
+  "id": "sim-05",
+  "title": "Schema Enforcer",
+  "type": "build_to_spec",
+  "instructions": "Write a prompt that takes a product description and outputs a valid JSON object matching the required schema: {name, category, price, features: [], rating, in_stock}. The category must be one of: electronics, clothing, food, books, home, sports, beauty, toys, automotive, health. The price must be a number (no currency symbols). Features must be an array of strings. Rating must be a number between 1.0 and 5.0. in_stock must be a boolean. Your prompt will be tested against 10 different product descriptions — it must produce valid, schema-compliant JSON for all of them.",
+  "default_model": "openai/gpt-4o",
+  "allowed_models": [
+    "openai/gpt-4o",
+    "anthropic/claude-3.5-sonnet",
+    "meta-llama/llama-3-70b-instruct",
+    "google/gemini-pro",
+    "mistralai/mistral-large"
+  ],
+  "test_cases": [
+    {
+      "id": "tc-05-01",
+      "input": "The Sony WH-1000XM5 wireless headphones deliver industry-leading noise cancellation with two processors controlling 8 microphones. 30-hour battery life, multipoint connection, speak-to-chat auto pause, and a lightweight 250g design. Rated 4.7 stars by 12,000+ reviewers. Currently $348 on Amazon. Ships within 24 hours.",
+      "expected_output": {
+        "name": "Sony WH-1000XM5",
+        "category": "electronics",
+        "price": 348,
+        "features": ["industry-leading noise cancellation", "30-hour battery life", "multipoint connection", "speak-to-chat auto pause", "lightweight 250g design"],
+        "rating": 4.7,
+        "in_stock": true
+      },
+      "metadata": {
+        "difficulty": "easy",
+        "description": "Standard electronics product with clear fields"
+      }
+    },
+    {
+      "id": "tc-05-02",
+      "input": "Patagonia Better Sweater Fleece Jacket — Men's. A classic full-zip fleece made from 100% recycled polyester. Available in 8 colors. Fair Trade Certified sewn. Moisture-wicking, layerable, with zippered handwarmer pockets and a stand-up collar. Customer rating: 4.5/5. Price: $139.00. Limited stock remaining — only a few sizes left.",
+      "expected_output": {
+        "name": "Patagonia Better Sweater Fleece Jacket",
+        "category": "clothing",
+        "price": 139.00,
+        "features": ["100% recycled polyester", "Fair Trade Certified", "moisture-wicking", "zippered handwarmer pockets", "stand-up collar", "available in 8 colors"],
+        "rating": 4.5,
+        "in_stock": true
+      },
+      "metadata": {
+        "difficulty": "easy",
+        "description": "Clothing item with sustainability features"
+      }
+    },
+    {
+      "id": "tc-05-03",
+      "input": "Organic Matcha Green Tea Powder by Jade Leaf — USDA Certified Organic, authentic Japanese origin (Uji, Kyoto). Culinary grade, perfect for lattes, smoothies, and baking. 30 servings per tin. Rich in antioxidants, L-theanine, and chlorophyll. No sugar, no fillers. 3.8 stars from 8,500 reviews. $9.95 per 1oz tin. Currently out of stock — expected restock date: March 2025.",
+      "expected_output": {
+        "name": "Jade Leaf Organic Matcha Green Tea Powder",
+        "category": "food",
+        "price": 9.95,
+        "features": ["USDA Certified Organic", "Japanese origin (Uji, Kyoto)", "culinary grade", "30 servings per tin", "rich in antioxidants and L-theanine", "no sugar or fillers"],
+        "rating": 3.8,
+        "in_stock": false
+      },
+      "metadata": {
+        "difficulty": "medium",
+        "description": "Food product that is out of stock — tests boolean handling"
+      }
+    },
+    {
+      "id": "tc-05-04",
+      "input": "\"Thinking, Fast and Slow\" by Daniel Kahneman. A groundbreaking exploration of the two systems that drive the way we think — System 1 (fast, intuitive) and System 2 (slow, deliberate). Winner of the National Academy of Sciences Best Book Award. 499 pages, published by Farrar, Straus and Giroux. Available in hardcover, paperback, and Kindle. Goodreads rating: 4.18/5. Paperback price: $11.99. In stock and ready to ship.",
+      "expected_output": {
+        "name": "Thinking, Fast and Slow",
+        "category": "books",
+        "price": 11.99,
+        "features": ["exploration of System 1 and System 2 thinking", "National Academy of Sciences Best Book Award winner", "499 pages", "available in hardcover, paperback, and Kindle"],
+        "rating": 4.2,
+        "in_stock": true
+      },
+      "metadata": {
+        "difficulty": "medium",
+        "description": "Book with special characters in title (comma) — tests JSON string escaping"
+      }
+    },
+    {
+      "id": "tc-05-05",
+      "input": "Dyson V15 Detect Absolute vacuum cleaner. Reveals microscopic dust with a green laser. Piezo sensor counts and sizes particles in real time. Up to 60 minutes of fade-free suction. LCD screen shows scientific proof of a deep clean. HEPA filtration captures 99.97% of particles. Includes 10 accessories. Rated 4.6 by professional reviewers. Priced at $749.99. Available now with free next-day delivery.",
+      "expected_output": {
+        "name": "Dyson V15 Detect Absolute",
+        "category": "home",
+        "price": 749.99,
+        "features": ["green laser dust detection", "piezo particle counting sensor", "up to 60 minutes battery", "LCD screen", "HEPA filtration (99.97%)", "10 included accessories"],
+        "rating": 4.6,
+        "in_stock": true
+      },
+      "metadata": {
+        "difficulty": "easy",
+        "description": "Home appliance with many technical features"
+      }
+    },
+    {
+      "id": "tc-05-06",
+      "input": "Wilson Pro Staff 97 v14 Tennis Racket. Used by Roger Federer (now retired). Braided graphite and Kevlar construction. 97 sq in head size, 315g unstrung weight, 16x19 string pattern. Provides exceptional control and feel for advanced players. Not great for beginners. Only 2.9 stars on Amazon due to the steep learning curve, but loved by competitive players. $269. Ships from warehouse, usually in stock.",
+      "expected_output": {
+        "name": "Wilson Pro Staff 97 v14 Tennis Racket",
+        "category": "sports",
+        "price": 269,
+        "features": ["braided graphite and Kevlar construction", "97 sq in head size", "315g unstrung weight", "16x19 string pattern", "designed for advanced players"],
+        "rating": 2.9,
+        "in_stock": true
+      },
+      "metadata": {
+        "difficulty": "medium",
+        "description": "Sports product with low rating — tests that model doesn't 'fix' the rating"
+      }
+    },
+    {
+      "id": "tc-05-07",
+      "input": "La Roche-Posay Anthelios Melt-in Sunscreen Milk SPF 100. Broad spectrum UVA/UVB protection. Dermatologist tested, suitable for sensitive skin. Water resistant (80 minutes). Lightweight, non-greasy, fast-absorbing. Oxybenzone-free, paraben-free. Contains antioxidant Cell-Ox Shield technology. 3 fl oz bottle. 4.4 out of 5 stars (15,000+ ratings). On sale for $18.49 (was $26.99). In stock.",
+      "expected_output": {
+        "name": "La Roche-Posay Anthelios Melt-in Sunscreen Milk SPF 100",
+        "category": "beauty",
+        "price": 18.49,
+        "features": ["SPF 100 broad spectrum", "dermatologist tested", "water resistant 80 minutes", "non-greasy formula", "oxybenzone-free and paraben-free", "Cell-Ox Shield antioxidant technology"],
+        "rating": 4.4,
+        "in_stock": true
+      },
+      "metadata": {
+        "difficulty": "medium",
+        "description": "Beauty product with sale price — should extract sale price, not original"
+      }
+    },
+    {
+      "id": "tc-05-08",
+      "input": "LEGO Technic Bugatti Chiron 42083. 3,599 pieces. Scale 1:8 model with working W16 engine, movable pistons, functioning steering, suspension, and rear spoiler. Measures over 22\" long. Includes a unique serial number and Bugatti branding. For ages 16+. Takes approximately 10-15 hours to build. This set has been retired by LEGO and is no longer manufactured. Collector rating: 4.9/5. Secondary market price averages around $489.",
+      "expected_output": {
+        "name": "LEGO Technic Bugatti Chiron 42083",
+        "category": "toys",
+        "price": 489,
+        "features": ["3599 pieces", "1:8 scale model", "working W16 engine with movable pistons", "functioning steering and suspension", "over 22 inches long", "ages 16+"],
+        "rating": 4.9,
+        "in_stock": false
+      },
+      "metadata": {
+        "difficulty": "hard",
+        "description": "Retired/discontinued product — tests in_stock = false detection from context"
+      }
+    },
+    {
+      "id": "tc-05-09",
+      "input": "Michelin Pilot Sport 4S tire, size 245/40ZR18. Ultra-high performance summer tire. Dynamic Response Technology for precise steering. Bi-compound tread design — inner compound for grip, outer compound for longevity. Treadwear rating: 300, traction: AA, temperature: A. Speed rated Y (186 mph). Fits BMW 3 Series, Audi A4, Mercedes C-Class. Consumer rating: 4.7/5. Price: $219.99 per tire (sold individually). Currently available at most retailers.",
+      "expected_output": {
+        "name": "Michelin Pilot Sport 4S 245/40ZR18",
+        "category": "automotive",
+        "price": 219.99,
+        "features": ["ultra-high performance summer tire", "Dynamic Response Technology", "bi-compound tread design", "speed rated Y (186 mph)", "treadwear rating 300", "fits BMW 3 Series, Audi A4, Mercedes C-Class"],
+        "rating": 4.7,
+        "in_stock": true
+      },
+      "metadata": {
+        "difficulty": "medium",
+        "description": "Automotive product with technical specifications"
+      }
+    },
+    {
+      "id": "tc-05-10",
+      "input": "Nature Made Vitamin D3 2000 IU (50 mcg) softgels, 250 count. USP verified for purity and potency. Supports bone, teeth, muscle, immune, and nervous system health. No color added, no artificial flavors, no preservatives, gluten free, no synthetic dyes. One softgel daily with a meal. The #1 pharmacist recommended vitamin D brand. Average rating across major retailers is about 4.8 stars. Costs $13.49 for a 250-count bottle. Buy it anywhere — always available.",
+      "expected_output": {
+        "name": "Nature Made Vitamin D3 2000 IU Softgels",
+        "category": "health",
+        "price": 13.49,
+        "features": ["USP verified", "250 count", "supports bone, teeth, muscle, immune health", "no artificial flavors or preservatives", "gluten free", "#1 pharmacist recommended"],
+        "rating": 4.8,
+        "in_stock": true
+      },
+      "metadata": {
+        "difficulty": "easy",
+        "description": "Health product with supplement-specific terminology"
+      }
+    }
+  ],
+  "scoring": {
+    "methods": ["json_schema"],
+    "pass_threshold": 0.8,
+    "dimensions": ["accuracy", "format_compliance", "consistency"]
+  },
+  "constraints": {
+    "max_tokens": 512,
+    "time_limit_seconds": null,
+    "max_attempts": null
+  }
+}

@@ -1,0 +1,228 @@
+{
+  "id": "sim-08",
+  "title": "Template Factory",
+  "type": "build_to_spec",
+  "instructions": "Create ONE prompt template with variables (using {{variable}} syntax) that can handle 10 different customer support ticket types: refund, shipping, technical, billing, cancellation, upgrade, complaint, feedback, warranty, and account. Your template should use {{ticket_type}} and {{customer_message}} variables at minimum. The template will be tested against 10 different inputs — one per ticket type — each with a different customer message. The generated response must be relevant to the ticket type, address the customer's specific concern, be professional, and follow a consistent format.",
+  "default_model": "openai/gpt-4o",
+  "allowed_models": [
+    "openai/gpt-4o",
+    "anthropic/claude-3.5-sonnet",
+    "meta-llama/llama-3-70b-instruct",
+    "google/gemini-pro",
+    "mistralai/mistral-large"
+  ],
+  "test_cases": [
+    {
+      "id": "tc-08-01",
+      "input": {
+        "ticket_type": "refund",
+        "customer_name": "Emily Johnson",
+        "customer_message": "I ordered a wireless keyboard (Order #WK-4892) two weeks ago and it arrived with a broken spacebar. I've been going back and forth with support but nobody has helped me. I just want my money back at this point.",
+        "order_id": "WK-4892"
+      },
+      "expected_criteria": [
+        "Acknowledges the broken product issue specifically",
+        "References the order number",
+        "Provides clear refund process/timeline",
+        "Apologizes for the previous support experience",
+        "Professional and empathetic tone"
+      ],
+      "metadata": {
+        "difficulty": "easy",
+        "description": "Standard refund request with frustration from previous interactions"
+      }
+    },
+    {
+      "id": "tc-08-02",
+      "input": {
+        "ticket_type": "shipping",
+        "customer_name": "Marcus Chen",
+        "customer_message": "My package was supposed to arrive 5 days ago according to tracking. The tracking number is TRK-88291 and it hasn't updated since Tuesday. It just says 'In Transit' with no location. I need this for a presentation on Friday.",
+        "order_id": "SH-7831"
+      },
+      "expected_criteria": [
+        "References the tracking number and stale tracking status",
+        "Acknowledges the time-sensitive nature (Friday presentation)",
+        "Provides specific next steps for investigation",
+        "Offers alternatives (expedited replacement, etc.)",
+        "Professional tone with urgency awareness"
+      ],
+      "metadata": {
+        "difficulty": "medium",
+        "description": "Shipping delay with time-sensitive deadline"
+      }
+    },
+    {
+      "id": "tc-08-03",
+      "input": {
+        "ticket_type": "technical",
+        "customer_name": "Priya Patel",
+        "customer_message": "I can't connect my smart home hub to my WiFi network. I've tried resetting it 3 times, used both 2.4GHz and 5GHz bands, and even tried a different router. The LED keeps blinking red. Model: SmartHub Pro X200. Firmware version 4.2.1.",
+        "order_id": null
+      },
+      "expected_criteria": [
+        "Acknowledges the specific troubleshooting already attempted",
+        "Provides NEW troubleshooting steps (not repeating what they tried)",
+        "References the specific model and firmware version",
+        "Explains what the red LED means",
+        "Offers escalation path if steps don't resolve"
+      ],
+      "metadata": {
+        "difficulty": "hard",
+        "description": "Technical issue with detailed troubleshooting already attempted"
+      }
+    },
+    {
+      "id": "tc-08-04",
+      "input": {
+        "ticket_type": "billing",
+        "customer_name": "David Kim",
+        "customer_message": "I was charged $49.99 on March 15 but my subscription plan is $29.99/month. I didn't authorize any upgrade or add-on. Can you explain this charge and fix it? My account email is d.kim@email.com.",
+        "order_id": null
+      },
+      "expected_criteria": [
+        "Acknowledges the specific billing discrepancy ($49.99 vs $29.99)",
+        "Takes the concern seriously (unauthorized charge)",
+        "Outlines investigation process",
+        "Provides timeline for resolution",
+        "Assures the customer their account will be reviewed"
+      ],
+      "metadata": {
+        "difficulty": "medium",
+        "description": "Billing discrepancy with specific dollar amounts"
+      }
+    },
+    {
+      "id": "tc-08-05",
+      "input": {
+        "ticket_type": "cancellation",
+        "customer_name": "Sarah Martinez",
+        "customer_message": "I want to cancel my annual subscription immediately. I signed up 3 months ago and was told I could cancel anytime. I'm switching to a competitor because your latest update removed features I use daily (batch export and custom dashboards).",
+        "order_id": null
+      },
+      "expected_criteria": [
+        "Processes the cancellation request clearly",
+        "Addresses the specific features mentioned (batch export, custom dashboards)",
+        "Explains refund policy for annual plan cancelled early",
+        "Offers retention alternatives without being pushy",
+        "Respectful of the customer's decision"
+      ],
+      "metadata": {
+        "difficulty": "medium",
+        "description": "Cancellation with specific reasons and retention opportunity"
+      }
+    },
+    {
+      "id": "tc-08-06",
+      "input": {
+        "ticket_type": "upgrade",
+        "customer_name": "James Wilson",
+        "customer_message": "I'm on the Basic plan and want to know about upgrading. My team has grown from 3 to 12 people and we're hitting the 5-user limit constantly. We also need API access and priority support. What are my options and can I get a discount for annual billing?",
+        "order_id": null
+      },
+      "expected_criteria": [
+        "Addresses team growth from 3 to 12 users",
+        "Explains plans that include 12+ users, API access, and priority support",
+        "Provides pricing information or directs to pricing page",
+        "Mentions annual billing discount",
+        "Enthusiastic but not overwhelming tone"
+      ],
+      "metadata": {
+        "difficulty": "easy",
+        "description": "Upgrade inquiry with specific needs"
+      }
+    },
+    {
+      "id": "tc-08-07",
+      "input": {
+        "ticket_type": "complaint",
+        "customer_name": "Patricia O'Brien",
+        "customer_message": "Your mobile app is TERRIBLE. It crashes every 5 minutes, it lost my unsaved work TWICE this week, and the new UI redesign is confusing and ugly. I've been a loyal customer for 4 years and I'm seriously considering leaving. You need to fix this or you'll lose a lot of customers.",
+        "order_id": null
+      },
+      "expected_criteria": [
+        "Validates the frustration without being defensive",
+        "Acknowledges 4 years of loyalty specifically",
+        "Addresses each issue: crashes, data loss, UI redesign",
+        "Provides concrete info about bug fixes or upcoming patches",
+        "Asks for device/OS info for crash investigation",
+        "Shows the feedback will reach the product team"
+      ],
+      "metadata": {
+        "difficulty": "hard",
+        "description": "Emotional complaint with multiple issues and loyalty leverage"
+      }
+    },
+    {
+      "id": "tc-08-08",
+      "input": {
+        "ticket_type": "feedback",
+        "customer_name": "Alex Tanaka",
+        "customer_message": "Just wanted to share some positive feedback. The new search feature is incredible — it saves me at least 30 minutes a day. One suggestion though: it would be amazing if you could add saved search filters so I don't have to re-enter my criteria every time. Overall, really happy with the product!",
+        "order_id": null
+      },
+      "expected_criteria": [
+        "Expresses genuine gratitude for the positive feedback",
+        "Acknowledges the specific feature praised (search)",
+        "Takes the suggestion seriously (saved search filters)",
+        "Explains how the suggestion will be handled (passed to product team, etc.)",
+        "Warm, appreciative tone"
+      ],
+      "metadata": {
+        "difficulty": "easy",
+        "description": "Positive feedback with a feature suggestion"
+      }
+    },
+    {
+      "id": "tc-08-09",
+      "input": {
+        "ticket_type": "warranty",
+        "customer_name": "Robert Brown",
+        "customer_message": "My ProMax blender (Model PM-3000) stopped working after 8 months. The motor makes a grinding noise and won't blend anything. I have the original receipt and the 2-year warranty card. How do I get this replaced or repaired? I bought it from your official website.",
+        "order_id": "BL-9921"
+      },
+      "expected_criteria": [
+        "Confirms the product is within warranty period (8 months < 2 years)",
+        "Explains the warranty claim process step by step",
+        "Mentions what they'll need (receipt, photos of issue, etc.)",
+        "Clarifies whether replacement or repair",
+        "Provides expected timeline"
+      ],
+      "metadata": {
+        "difficulty": "medium",
+        "description": "Warranty claim with all necessary info provided"
+      }
+    },
+    {
+      "id": "tc-08-10",
+      "input": {
+        "ticket_type": "account",
+        "customer_name": "Lisa Nguyen",
+        "customer_message": "I can't log in to my account. I've tried resetting my password 3 times but never receive the reset email. I've checked spam folders. My account email is lisa.n@company.com. I have important data in my account and I'm panicking that I've been hacked. Please help urgently.",
+        "order_id": null
+      },
+      "expected_criteria": [
+        "Treats the situation with appropriate urgency",
+        "Addresses the security concern (possible hack)",
+        "Provides alternative identity verification methods",
+        "Explains why reset emails might not arrive",
+        "Reassures about data safety",
+        "Offers immediate escalation to security team"
+      ],
+      "metadata": {
+        "difficulty": "hard",
+        "description": "Account access issue with security concerns"
+      }
+    }
+  ],
+  "scoring": {
+    "methods": ["llm_judge", "regex_match"],
+    "pass_threshold": 0.7,
+    "dimensions": ["accuracy", "format_compliance", "consistency"]
+  },
+  "constraints": {
+    "max_tokens": 512,
+    "time_limit_seconds": null,
+    "max_attempts": null
+  }
+}

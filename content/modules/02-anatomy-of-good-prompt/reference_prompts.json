@@ -1,0 +1,32 @@
+[
+  {
+    "id": "ref-02-01",
+    "original_weak_prompt": "Write about dogs",
+    "improved_prompt": "Write a 200-word informative blog post about the top 3 health risks for Golden Retrievers, aimed at first-time dog owners. For each health risk, include: (1) what it is in plain language, (2) early warning signs to watch for, (3) one preventive measure. Use a warm, reassuring tone. Format with a brief intro paragraph followed by 3 numbered sections with bold headings.",
+    "what_was_fixed": "Added specific topic (Golden Retriever health risks), audience (first-time owners), word count (200), structure (3 numbered sections), tone (warm, reassuring), and format (bold headings)."
+  },
+  {
+    "id": "ref-02-02",
+    "original_weak_prompt": "Summarize this article about renewable energy trends in 2025...",
+    "improved_prompt": "Summarize the following article about renewable energy trends in 2025. Structure your summary as follows:\n\n**Opening:** 1-sentence overview of the overall trend.\n\nThen cover each topic as a bullet point (one sentence each):\n• Solar panel efficiency improvements\n• Growth of offshore wind farms\n• New battery storage technologies\n• Government incentive programs\n• Impact on fossil fuel industries\n\n**Closing:** 1-sentence forward-looking statement.\n\nKeep the total summary under 150 words. Use plain language suitable for a business newsletter.\n\n---\n[Article text here]",
+    "what_was_fixed": "Added clear structure (opening, 5 bullets, closing), word limit, formatting requirements (bold headings, bullet points), audience context, and proper delimiting of the input text."
+  },
+  {
+    "id": "ref-02-03",
+    "original_weak_prompt": "Write a comprehensive and detailed technical analysis of quantum computing in 2 sentences...",
+    "improved_prompt": "Explain quantum computing to a curious 10-year-old in 4-5 sentences. Use an everyday analogy (like a coin flip or a maze) to explain superposition. Keep the language simple — no jargon, no words over 3 syllables where possible. End with one exciting thing quantum computers might do in the future that a kid would find cool.",
+    "what_was_fixed": "Removed contradictions by choosing ONE audience (children), consistent tone (simple, fun), realistic length (4-5 sentences for the depth needed), and specific techniques (analogy requirement, vocabulary constraint)."
+  },
+  {
+    "id": "ref-02-04",
+    "original_weak_prompt": "Give me code",
+    "improved_prompt": "Write a Python function called `parse_csv_to_dicts` that:\n\n- Takes a file path (string) as input\n- Reads a CSV file and returns a list of dictionaries\n- Uses the first row as dictionary keys\n- Handles: missing values (replace with None), quoted fields with commas, UTF-8 encoding\n- Raises `FileNotFoundError` with a descriptive message if file doesn't exist\n- Raises `ValueError` if the CSV has fewer than 2 rows (header only)\n\nConstraints:\n- Use only the Python standard library (no pandas)\n- Include type hints for all parameters and return value\n- Add a docstring with 2 usage examples\n- Keep it under 40 lines\n\nReturn only the function code with no additional explanation.",
+    "what_was_fixed": "Specified language (Python), concrete function with a name, clear input/output, 4 edge cases, constraints (no external libs), documentation requirements (type hints, docstring), length limit, and output format (code only)."
+  },
+  {
+    "id": "ref-02-05",
+    "original_weak_prompt": "Translate this",
+    "improved_prompt": "Translate the following English marketing email into Latin American Spanish (es-MX). \n\nRequirements:\n- Use formal 'usted' form (this is a B2B communication)\n- Preserve the persuasive tone and urgency of the original\n- Keep product names ('CloudSync Pro', 'DataVault') in English\n- Adapt the idiom 'hit the ground running' to a natural Spanish equivalent\n- If any phrase doesn't translate well, add [TRANSLATOR NOTE: ...] with an explanation\n\nSource text:\n---\nSubject: Don't Miss Our Early-Bird Pricing for CloudSync Pro\n\nDear valued partner,\n\nWe're excited to announce that CloudSync Pro is launching next month, and we want you to hit the ground running. For a limited time, lock in 40% off annual plans when you migrate from your current DataVault setup.\n\nAct now — this offer expires December 31st.\n\nBest regards,\nThe CloudSync Team\n---\n\nReturn the translated email in the same format (subject line + body).",
+    "what_was_fixed": "Added source text, specified source language (English) and target dialect (es-MX), formality level (usted), handling of brand names, cultural adaptation instructions, edge case protocol (translator notes), and output format matching the input."
+  }
+]

@@ -1,0 +1,163 @@
+{
+  "id": "sim-11",
+  "title": "The Tool Selector",
+  "type": "build_to_spec",
+  "instructions": "Write a prompt that makes the model choose the correct tool from: (1) calculator — for math, (2) search — for current info, (3) code_runner — for code execution. The model must output JSON: {\"tool\": \"...\", \"input\": \"...\", \"reasoning\": \"...\"}. Your prompt should include clear tool descriptions and selection criteria. The model should handle both clear-cut and ambiguous cases correctly.",
+  "default_model": "openai/gpt-4o",
+  "allowed_models": [
+    "openai/gpt-4o",
+    "anthropic/claude-3.5-sonnet",
+    "meta-llama/llama-3-70b-instruct",
+    "google/gemini-pro",
+    "mistralai/mistral-large"
+  ],
+  "test_cases": [
+    {
+      "id": "tc-11-01",
+      "input": "What is 47 * 89 + 156?",
+      "expected_output": {
+        "tool": "calculator"
+      },
+      "tags": ["clear-cut", "math"]
+    },
+    {
+      "id": "tc-11-02",
+      "input": "Who won the 2024 Nobel Prize in Physics?",
+      "expected_output": {
+        "tool": "search"
+      },
+      "tags": ["clear-cut", "factual"]
+    },
+    {
+      "id": "tc-11-03",
+      "input": "Write a Python function to sort a list and show the output",
+      "expected_output": {
+        "tool": "code_runner"
+      },
+      "tags": ["clear-cut", "code"]
+    },
+    {
+      "id": "tc-11-04",
+      "input": "What's 15% tip on a $67.50 bill?",
+      "expected_output": {
+        "tool": "calculator"
+      },
+      "tags": ["clear-cut", "math", "real-world"]
+    },
+    {
+      "id": "tc-11-05",
+      "input": "What are the current stock prices of Apple?",
+      "expected_output": {
+        "tool": "search"
+      },
+      "tags": ["clear-cut", "factual", "real-time"]
+    },
+    {
+      "id": "tc-11-06",
+      "input": "Generate a Python script that reads a CSV file and prints the top 5 rows",
+      "expected_output": {
+        "tool": "code_runner"
+      },
+      "tags": ["clear-cut", "code", "data"]
+    },
+    {
+      "id": "tc-11-07",
+      "input": "Convert 72 degrees Fahrenheit to Celsius",
+      "expected_output": {
+        "tool": "calculator"
+      },
+      "tags": ["clear-cut", "math", "conversion"]
+    },
+    {
+      "id": "tc-11-08",
+      "input": "What is the population of Tokyo in 2024?",
+      "expected_output": {
+        "tool": "search"
+      },
+      "tags": ["clear-cut", "factual"]
+    },
+    {
+      "id": "tc-11-09",
+      "input": "Write a regex pattern in Python that validates email addresses and test it with 5 examples",
+      "expected_output": {
+        "tool": "code_runner"
+      },
+      "tags": ["clear-cut", "code", "regex"]
+    },
+    {
+      "id": "tc-11-10",
+      "input": "If I invest $10,000 at 5% annual compound interest, how much will I have after 10 years?",
+      "expected_output": {
+        "tool": "calculator"
+      },
+      "tags": ["math", "finance"]
+    },
+    {
+      "id": "tc-11-11",
+      "input": "Implement a binary search algorithm in Python and demonstrate it finding the number 7 in a sorted list",
+      "expected_output": {
+        "tool": "code_runner"
+      },
+      "tags": ["code", "algorithm"]
+    },
+    {
+      "id": "tc-11-12",
+      "input": "What were the top 3 highest-grossing movies of 2024?",
+      "expected_output": {
+        "tool": "search"
+      },
+      "tags": ["factual", "entertainment"]
+    },
+    {
+      "id": "tc-11-13",
+      "input": "Calculate the monthly mortgage payment on a $350,000 loan at 6.5% interest for 30 years",
+      "expected_output": {
+        "tool": "calculator"
+      },
+      "tags": ["math", "finance", "complex"]
+    },
+    {
+      "id": "tc-11-14",
+      "input": "Write a Python function that takes a string and returns the frequency of each character, then test it with 'hello world'",
+      "expected_output": {
+        "tool": "code_runner"
+      },
+      "tags": ["code", "string-processing"]
+    },
+    {
+      "id": "tc-11-15",
+      "input": "Who is the current Secretary-General of the United Nations and when did they start?",
+      "expected_output": {
+        "tool": "search"
+      },
+      "tags": ["factual", "current-events"]
+    }
+  ],
+  "scoring": {
+    "methods": ["json_schema", "exact_match"],
+    "pass_threshold": 0.7,
+    "dimensions": ["accuracy", "format_compliance"],
+    "match_fields": ["tool"],
+    "json_schema": {
+      "type": "object",
+      "required": ["tool", "input", "reasoning"],
+      "properties": {
+        "tool": {
+          "type": "string",
+          "enum": ["calculator", "search", "code_runner"]
+        },
+        "input": {
+          "type": "string"
+        },
+        "reasoning": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "constraints": {
+    "max_tokens": 1024,
+    "time_limit_seconds": null,
+    "max_attempts": null
+  }
+}

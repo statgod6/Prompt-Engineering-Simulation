@@ -1,0 +1,19 @@
+{
+  "id": "sim-20",
+  "title": "Capstone",
+  "type": "free_lab",
+  "instructions": "Design a complete prompt-driven application from scratch. This is your capstone project — demonstrate mastery of prompt engineering by building a production-grade system.\n\n**Choose one project type** (or propose your own):\n- AI Tutor (adaptive teaching for a specific subject)\n- Code Review Bot (automated code analysis with actionable feedback)\n- Legal Document Analyzer (extract key clauses, flag risks, plain-English summaries)\n- Content Moderator (classify content, handle nuance, support appeals)\n- Medical Triage Assistant (symptom collection, urgency assessment, safety-first)\n\n**Your submission must include ALL of the following:**\n\n### 1. System Prompt (30%)\nA complete, layered system prompt with:\n- Persona definition (name, role, expertise, communication style)\n- Instruction hierarchy with priority ordering\n- Rules (MUST / MAY / MUST NOT)\n- Tool definitions (at least 2 tools, if applicable)\n- Safety guardrails (input filtering, output validation, behavioral boundaries)\n- 2-3 few-shot examples\n- Sandwich defense (critical rules at start AND end)\n\n### 2. Evaluation Suite (25%)\nAt least 10 test cases:\n- 5+ standard/happy path cases\n- 3+ edge cases\n- 2+ adversarial/security cases\nEach with: ID, input, expected behavior, category, difficulty\nInclude a scoring rubric with dimensions and pass threshold.\n\n### 3. Security Review (15%)\nAt least 5 attack tests:\n- 2+ prompt injection attempts\n- 1+ jailbreak attempt\n- 1+ system prompt extraction attempt\n- 1+ domain-specific attack\nEach with: attack description, input, expected defense, result.\n\n### 4. Documentation (15%)\n- Project overview and target audience\n- Architecture decisions and rationale\n- Known limitations\n- Future improvements\n\n### 5. Innovation (15%)\nDemonstrate creative use of techniques from the course.\n\nSubmit as a single, structured response covering all 5 sections.",
+  "default_model": "openai/gpt-4o",
+  "allowed_models": ["openai/gpt-4o", "anthropic/claude-3.5-sonnet", "meta-llama/llama-3-70b-instruct", "google/gemini-pro", "mistralai/mistral-large"],
+  "test_cases": [],
+  "scoring": {
+    "methods": ["llm_judge"],
+    "pass_threshold": 0.6,
+    "dimensions": ["accuracy", "format_compliance", "robustness", "efficiency", "consistency"]
+  },
+  "constraints": {
+    "max_tokens": 4096,
+    "time_limit_seconds": null,
+    "max_attempts": null
+  }
+}

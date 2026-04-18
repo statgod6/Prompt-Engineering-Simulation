@@ -1,0 +1,76 @@
+{
+  "id": "sim-18",
+  "title": "The Agent Builder",
+  "type": "pipeline",
+  "instructions": "Build a travel planning agent that handles a complete trip planning workflow in 4 sequential steps.\n\n**Your Task:**\nDesign the prompts for a 4-step travel planning pipeline. Each step's prompt should:\n- Take input from the previous step (or user request for step 1)\n- Use available tools appropriately\n- Produce structured output that feeds the next step\n- Handle errors and edge cases\n\n**Step 1 — Destination Research:**\nSearch for destinations matching the traveler's interests. Output a ranked list of recommended cities/areas with brief descriptions and estimated daily costs.\n\nAvailable tool: search_destinations(country, interests[], duration_days)\n\n**Step 2 — Flights & Hotels:**\nFind flights and hotels within the remaining budget. Present the top options with prices.\n\nAvailable tools: find_flights(origin, destination, dates, passengers, budget_max), find_hotels(city, checkin, checkout, guests, budget_per_night)\n\n**Step 3 — Budget Planning:**\nCreate a detailed budget breakdown covering flights, hotels, food, activities, and transportation. Ensure total stays within the user's budget.\n\nAvailable tool: create_budget(items[])\n\n**Step 4 — Itinerary Generation:**\nGenerate a complete day-by-day itinerary with times, activities, meals, and transportation.\n\nAvailable tool: generate_itinerary(destination, days, interests[], key_bookings[])\n\n**Submit all 4 step prompts as a single response.** Each prompt should include the ReAct format (Thought/Action/Observation) and clear instructions for error handling.\n\n**Test input:** \"Plan a 5-day trip to Japan for 2 people, budget $3000, interested in food and history\"",
+  "default_model": "openai/gpt-4o",
+  "allowed_models": ["openai/gpt-4o", "anthropic/claude-3.5-sonnet", "meta-llama/llama-3-70b-instruct", "google/gemini-pro", "mistralai/mistral-large"],
+  "test_cases": [
+    {
+      "id": "tc-18-01",
+      "input": "Plan a 5-day trip to Japan for 2 people, budget $3000, interested in food and history.",
+      "expected_behavior": "Step 1 prompt correctly triggers destination research for Japan with food and history interests. Output includes at least 3 destination recommendations with estimated costs.",
+      "category": "step_1_research",
+      "difficulty": "medium"
+    },
+    {
+      "id": "tc-18-02",
+      "input": "Based on the destination research recommending Tokyo and Kyoto, find flights from New York (JFK) for April 15-20, 2 passengers, and hotels under $150/night.",
+      "expected_behavior": "Step 2 prompt correctly uses find_flights and find_hotels tools with proper parameters. Budget allocation is reasonable (e.g., $1200 for flights leaves $1800 for hotels/food/activities).",
+      "category": "step_2_logistics",
+      "difficulty": "medium"
+    },
+    {
+      "id": "tc-18-03",
+      "input": "Create a budget breakdown: flights $1100 total, hotels $600 total (5 nights at $120/night), leaving $1300 for food, activities, and local transport for 2 people over 5 days.",
+      "expected_behavior": "Step 3 prompt produces a detailed budget with categories. Total must not exceed $3000. Includes per-day breakdown and contingency buffer. Flags if any category seems unrealistic.",
+      "category": "step_3_budget",
+      "difficulty": "medium"
+    },
+    {
+      "id": "tc-18-04",
+      "input": "Generate a day-by-day itinerary for 5 days in Tokyo (3 days) and Kyoto (2 days) for 2 people interested in food and history, with pre-booked flights and hotels.",
+      "expected_behavior": "Step 4 prompt produces a complete itinerary with morning/afternoon/evening activities, meal suggestions, transportation between cities, and estimated costs per activity.",
+      "category": "step_4_itinerary",
+      "difficulty": "medium"
+    },
+    {
+      "id": "tc-18-05",
+      "input": "The flight search returned no results under $1500 for the requested dates. How should the agent handle this?",
+      "expected_behavior": "The agent's error handling triggers: suggests flexible dates, alternative airports, or budget reallocation. Does not fabricate flight data. Communicates the issue clearly.",
+      "category": "error_handling",
+      "difficulty": "hard"
+    },
+    {
+      "id": "tc-18-06",
+      "input": "The total budget calculation shows $3,250 — $250 over the $3,000 limit. How does the agent adjust?",
+      "expected_behavior": "Agent detects the budget overrun and proposes adjustments: downgrade hotel, pick cheaper flights, reduce activity budget, or suggest fewer days. Presents options to the user.",
+      "category": "error_handling",
+      "difficulty": "hard"
+    },
+    {
+      "id": "tc-18-07",
+      "input": "Plan a 5-day trip to Japan for 2 people, budget $3000, interested in food and history. Also, I'm vegetarian and my partner uses a wheelchair.",
+      "expected_behavior": "Agent incorporates accessibility and dietary requirements into all 4 steps: wheelchair-accessible hotels, vegetarian restaurant recommendations, accessible transportation, and activity suitability.",
+      "category": "edge_case",
+      "difficulty": "hard"
+    },
+    {
+      "id": "tc-18-08",
+      "input": "I changed my mind — instead of Japan, make it South Korea with the same budget and interests.",
+      "expected_behavior": "Agent demonstrates replanning capability. Restarts from Step 1 with updated destination. Previous Japan-specific data is discarded. Plan adapts to South Korea destinations.",
+      "category": "replanning",
+      "difficulty": "medium"
+    }
+  ],
+  "scoring": {
+    "methods": ["llm_judge"],
+    "pass_threshold": 0.6,
+    "dimensions": ["accuracy", "format_compliance", "efficiency"]
+  },
+  "constraints": {
+    "max_tokens": 2048,
+    "time_limit_seconds": null,
+    "max_attempts": null
+  }
+}

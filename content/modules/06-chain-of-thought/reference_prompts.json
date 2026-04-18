@@ -1,0 +1,34 @@
+{
+  "module_id": "06-chain-of-thought",
+  "simulation_id": "sim-06",
+  "reference_prompts": [
+    {
+      "id": "ref-06-zero-shot-cot",
+      "label": "Zero-Shot CoT Template",
+      "prompt": "Solve the following problem. Think through it step by step, showing all your work and intermediate calculations. After your reasoning, state your final answer clearly on a new line starting with 'ANSWER:'.\n\nProblem: {{input}}",
+      "strategy": "Zero-shot CoT using explicit step-by-step instruction and structured answer extraction. Works well for most arithmetic and logic problems without needing examples.",
+      "expected_score": 0.8
+    },
+    {
+      "id": "ref-06-few-shot-cot",
+      "prompt": "I'll solve math and logic problems step by step.\n\nExample 1:\nQ: A bakery makes 120 cookies. They sell 45 in the morning and 38 in the afternoon. They then bake 50 more. How many cookies do they have?\nA: Let me work through this step by step.\n1. Start with 120 cookies\n2. Sell 45 in morning: 120 - 45 = 75\n3. Sell 38 in afternoon: 75 - 38 = 37\n4. Bake 50 more: 37 + 50 = 87\nANSWER: 87 cookies\n\nExample 2:\nQ: If all cats are animals and some animals are pets, are all cats pets?\nA: Let me think through the logic.\n1. Premise 1: All cats are animals (cats ⊂ animals)\n2. Premise 2: Some animals are pets (animals ∩ pets ≠ ∅)\n3. But \"some animals are pets\" doesn't tell us WHICH animals\n4. The cats could be in the pet group or not — we can't determine this\n5. This is the fallacy of the undistributed middle\nANSWER: No, we cannot conclude that all cats are pets.\n\nNow solve this:\nQ: {{input}}\nA: Let me work through this step by step.",
+      "label": "Few-Shot CoT with Examples",
+      "strategy": "Few-shot CoT providing two worked examples — one arithmetic, one logic — to demonstrate the reasoning pattern. The examples show labeled steps and a clear ANSWER line for easy extraction.",
+      "expected_score": 0.9
+    },
+    {
+      "id": "ref-06-structured-cot",
+      "label": "Structured CoT with Verification",
+      "prompt": "Solve the following problem using this exact structure:\n\nUNDERSTANDING: Restate the problem in your own words.\nAPPROACH: Describe how you'll solve it.\nSTEPS:\n- Step 1: [first reasoning step]\n- Step 2: [next step]\n- (continue as needed)\nVERIFICATION: Check your answer using a different method or by plugging it back in.\nANSWER: [final answer]\n\nProblem: {{input}}",
+      "strategy": "Forces the model through a structured reasoning pipeline with explicit verification. The UNDERSTANDING step catches misinterpretations early. The VERIFICATION step catches calculation errors. Best for hard problems.",
+      "expected_score": 0.85
+    },
+    {
+      "id": "ref-06-direct-baseline",
+      "label": "Direct Prompt (No CoT Baseline)",
+      "prompt": "Answer this problem concisely:\n\n{{input}}",
+      "strategy": "Baseline direct prompt with no CoT instruction. Used for comparison to demonstrate CoT's impact. Expected to fail on harder problems.",
+      "expected_score": 0.4
+    }
+  ]
+}

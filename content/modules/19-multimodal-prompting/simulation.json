@@ -1,0 +1,90 @@
+{
+  "id": "sim-19",
+  "title": "Visual Analyst",
+  "type": "build_to_spec",
+  "instructions": "Write a prompt that analyzes product images and extracts structured metadata. Since we cannot send actual images in this simulation, product images will be provided as detailed text descriptions.\n\nYour prompt must:\n1. Accept a text description of a product image as input\n2. Extract structured metadata following a consistent JSON schema\n3. Handle diverse product categories (electronics, clothing, food, furniture, etc.)\n4. Include confidence scores for each extracted field\n5. Gracefully handle ambiguous or incomplete image descriptions\n\n**Required output schema:**\n```json\n{\n  \"product_name\": \"string\",\n  \"category\": \"string\",\n  \"subcategory\": \"string\",\n  \"colors\": [\"string\"],\n  \"material\": \"string or null\",\n  \"brand\": \"string or null\",\n  \"condition\": \"new|used|damaged|unknown\",\n  \"visible_text\": [\"string\"],\n  \"features\": [\"string\"],\n  \"tags\": [\"string (8-12 tags)\"],\n  \"estimated_price_range\": \"string\",\n  \"target_audience\": \"string\",\n  \"confidence\": 0.0-1.0\n}\n```\n\nYour prompt will be tested against 10 product image descriptions. The AI using your prompt must produce valid JSON matching the schema for every test case.\n\nSubmit your complete extraction prompt.",
+  "default_model": "openai/gpt-4o",
+  "allowed_models": ["openai/gpt-4o", "anthropic/claude-3.5-sonnet", "meta-llama/llama-3-70b-instruct", "google/gemini-pro", "mistralai/mistral-large"],
+  "test_cases": [
+    {
+      "id": "tc-19-01",
+      "input": "Image description: A pair of over-ear headphones on a white studio background. The headphones are matte black with silver accents on the hinges. The ear cushions appear to be memory foam covered in protein leather. The headband has 'SoundMax' printed in small silver text on the left side. There's a USB-C charging port visible on the bottom of the right ear cup, and a small LED indicator light (currently off). A 3.5mm audio jack is also visible. The headphones are in pristine, new condition with no scratches or wear.",
+      "expected_behavior": "Extracts: product_name (wireless headphones), category (electronics), subcategory (audio/headphones), colors (black, silver), material (plastic, protein leather, memory foam), brand (SoundMax), condition (new), visible_text (['SoundMax']), features (over-ear, USB-C, 3.5mm jack, LED indicator, memory foam cushions), tags (relevant search terms). Valid JSON.",
+      "category": "electronics",
+      "difficulty": "easy"
+    },
+    {
+      "id": "tc-19-02",
+      "input": "Image description: A women's crossbody handbag photographed at a 45-degree angle on a marble surface. The bag is a deep burgundy color in what appears to be genuine leather with visible grain texture. It has a gold-tone chain strap and a magnetic flap closure with an embossed logo that reads 'MARA'. The interior is partially visible showing a beige fabric lining. Approximate size: 8 inches wide, 6 inches tall. There's a small scratch near the bottom-right corner.",
+      "expected_behavior": "Extracts: category (clothing/accessories), colors (burgundy, gold, beige), material (leather), brand (MARA), condition (used — scratch noted), visible_text (['MARA']), dimensions noted in features. Valid JSON with confidence slightly reduced due to the scratch indicating used condition.",
+      "category": "fashion",
+      "difficulty": "easy"
+    },
+    {
+      "id": "tc-19-03",
+      "input": "Image description: A glass jar of honey sitting on a rustic wooden table. The jar is a standard mason jar shape, about 6 inches tall. The honey is a deep amber color and appears viscous. A white label with green accents reads 'Wildflower Honey' in a serif font, with 'Green Valley Farms' below it in smaller text. Additional text on the label: 'Net Wt. 16 oz (454g)', 'Raw & Unfiltered', 'Product of USA'. There's a hexagonal pattern embossed on the lid. A wooden honey dipper is placed next to the jar.",
+      "expected_behavior": "Extracts: category (food), all visible text accurately including weight and origin, brand (Green Valley Farms), features (raw, unfiltered, mason jar), material (glass). Valid JSON.",
+      "category": "food",
+      "difficulty": "medium"
+    },
+    {
+      "id": "tc-19-04",
+      "input": "Image description: A modern desk lamp photographed in a dimly lit room, showcasing its light output. The lamp has a slim, adjustable aluminum arm in brushed silver with a matte black weighted base. The light head is a flat, circular LED panel about 4 inches in diameter. There's a touch-sensitive strip on the base for brightness control with small icons showing sun symbols. A USB-A charging port is visible on the back of the base. The brand name is not visible in this angle. The lamp appears brand new.",
+      "expected_behavior": "Extracts: category (home/lighting), colors (silver, black), material (aluminum), brand (null — not visible), features (LED, adjustable arm, touch control, USB charging), condition (new). Valid JSON with brand set to null and appropriate confidence.",
+      "category": "home",
+      "difficulty": "medium"
+    },
+    {
+      "id": "tc-19-05",
+      "input": "Image description: A close-up photograph of a running shoe, showing only the side profile. The shoe is predominantly neon green with black mesh on the upper. The sole is white with a visible air pocket in the heel area. There's a swoosh-like logo on the side but it's slightly blurry — it could be Nike or a similar brand but cannot be confirmed. Text on the tongue is not visible from this angle. The shoe appears to be a men's size based on proportions. Some minor dirt on the sole suggests light use.",
+      "expected_behavior": "Extracts: category (sports/footwear), colors (neon green, black, white), material (mesh, rubber), brand (uncertain — should note it's unclear, not assume Nike), condition (used — dirt noted). Confidence should be lower for brand. Valid JSON.",
+      "category": "sports",
+      "difficulty": "hard"
+    },
+    {
+      "id": "tc-19-06",
+      "input": "Image description: A blurry, poorly lit photograph of what appears to be a small electronic device on a dark surface. The image is taken from about 3 feet away. You can make out a rectangular shape, possibly black or dark gray. There might be a screen on the front, and what could be buttons on the side. The image quality is too low to read any text. The overall shape suggests it could be a smartphone, a portable charger, or a small tablet.",
+      "expected_behavior": "Handles the ambiguous, low-quality image gracefully. Sets confidence very low (0.2-0.4). Uses 'unknown' for uncertain fields. Does NOT hallucinate specific brand, model, or features. Notes image quality issues. Valid JSON.",
+      "category": "ambiguous",
+      "difficulty": "hard"
+    },
+    {
+      "id": "tc-19-07",
+      "input": "Image description: A flat lay photograph showing multiple items arranged on a light gray background: a leather-bound notebook (dark brown, approximately 5x7 inches, with 'MOLESKINE' embossed on the lower front), a stainless steel fountain pen with a gold nib laid diagonally across the notebook, a pair of round tortoiseshell reading glasses, and a small ceramic cup of espresso. The arrangement looks styled for a lifestyle blog or social media post.",
+      "expected_behavior": "Recognizes this is a lifestyle/flat lay with multiple products. Either extracts the primary product (notebook) or lists all items. Identifies the MOLESKINE brand. Notes the styled/lifestyle context. Valid JSON.",
+      "category": "lifestyle_multi_item",
+      "difficulty": "hard"
+    },
+    {
+      "id": "tc-19-08",
+      "input": "Image description: A children's toy robot, approximately 10 inches tall, made of brightly colored plastic. The body is bright blue, arms are red, and legs are yellow. The face has two large LED eyes (currently lit green) and a speaker grille mouth. On the chest is a small LCD screen showing a smiley face. The back has a battery compartment cover with 'Ages 3+' and 'Model: RB-200' printed on it. The brand 'KidBot' is printed on the left foot. The toy is on a white backdrop and appears brand new in its packaging — a clear plastic window box with colorful graphics.",
+      "expected_behavior": "Extracts: all visible text (Ages 3+, RB-200, KidBot), multiple colors, category (toys), features (LED eyes, LCD screen, speaker), brand (KidBot), condition (new, in packaging). Valid JSON.",
+      "category": "toys",
+      "difficulty": "medium"
+    },
+    {
+      "id": "tc-19-09",
+      "input": "Image description: A wooden cutting board with an assortment of artisan cheeses, viewed from above. There are 4 distinct cheese varieties: a wheel of brie (white rind, creamy interior visible from a cut wedge), a block of aged cheddar (orange, with visible crystallization), a log of goat cheese coated in herbs, and a blue cheese wedge with prominent blue-green veining. Scattered around are green grapes, walnuts, rosemary sprigs, and crackers. A small handwritten chalk label reads 'Artisan Selection' in cursive. No brand packaging is visible.",
+      "expected_behavior": "Recognizes this as a food arrangement/charcuterie board. Extracts visible items, the handwritten label text. Sets brand to null. Identifies it as a food/gourmet category. Valid JSON with appropriate tags for food photography.",
+      "category": "food_arrangement",
+      "difficulty": "medium"
+    },
+    {
+      "id": "tc-19-10",
+      "input": "Image description: A screenshot of a mobile app showing an error state. The app has a white background with a navigation bar at the top reading 'My Orders' in bold black text. Below is a red error banner with a warning icon and the text 'Unable to load orders. Check your connection and try again.' There's a blue 'Retry' button centered below the error message. The bottom navigation bar shows 4 icons: Home, Search, Cart (with a red badge showing '3'), and Profile. The status bar at the top shows 'AT&T', Wi-Fi off icon, and battery at 23%. This appears to be an iOS app.",
+      "expected_behavior": "Correctly classifies as a screenshot (not a physical product). Extracts all visible text including error message, button labels, navigation items, and status bar details. Identifies it as a mobile app (iOS). Valid JSON with appropriate category and tags.",
+      "category": "screenshot",
+      "difficulty": "hard"
+    }
+  ],
+  "scoring": {
+    "methods": ["json_schema", "llm_judge"],
+    "pass_threshold": 0.6,
+    "dimensions": ["accuracy", "format_compliance"]
+  },
+  "constraints": {
+    "max_tokens": 2048,
+    "time_limit_seconds": null,
+    "max_attempts": null
+  }
+}

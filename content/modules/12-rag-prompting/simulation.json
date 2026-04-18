@@ -1,0 +1,162 @@
+{
+  "id": "sim-12",
+  "title": "The Librarian",
+  "type": "build_to_spec",
+  "instructions": "Write a prompt that answers questions ONLY from the provided documents. The prompt must: (1) cite sources using [Doc X] notation for every factual claim, (2) say 'I don't know' or 'The provided documents do not contain this information' if the answer isn't in the documents, (3) synthesize information from multiple documents when needed. Your prompt will be tested against questions that are fully answerable, partially answerable, and not answerable from the documents.",
+  "default_model": "openai/gpt-4o",
+  "allowed_models": [
+    "openai/gpt-4o",
+    "anthropic/claude-3.5-sonnet",
+    "meta-llama/llama-3-70b-instruct",
+    "google/gemini-pro",
+    "mistralai/mistral-large"
+  ],
+  "documents": [
+    {
+      "id": "doc-1",
+      "title": "NovaTech Employee Leave Policy",
+      "content": "All full-time NovaTech employees are entitled to 22 days of paid time off (PTO) per calendar year. PTO accrues at a rate of 1.83 days per month starting from the hire date. New employees may use accrued PTO after completing their 90-day probationary period. Unused PTO may be carried over to the next year, up to a maximum of 5 days. Any PTO beyond the 5-day carryover limit will be forfeited on January 1st. Employees must submit PTO requests at least 5 business days in advance through the HR Portal. Manager approval is required for all PTO requests exceeding 3 consecutive days."
+    },
+    {
+      "id": "doc-2",
+      "title": "NovaTech Remote Work Policy",
+      "content": "NovaTech supports a hybrid work model. Employees in eligible roles may work remotely up to 3 days per week. Remote work eligibility is determined by the employee's department head and must be approved during the annual review cycle. Employees working remotely must be available during core hours (10:00 AM - 3:00 PM EST) and must use the company VPN for all work activities. Remote workers are responsible for maintaining a secure and ergonomic home office setup. NovaTech provides a one-time $500 home office stipend for newly approved remote workers. Internet costs are not reimbursed."
+    },
+    {
+      "id": "doc-3",
+      "title": "NovaTech Health Benefits Summary",
+      "content": "NovaTech offers comprehensive health benefits to all full-time employees. The company covers 80% of the premium for the Standard Health Plan and 65% of the premium for the Premium Health Plan. Dental and vision coverage are included in both plans at no additional cost. Employees may add dependents (spouse and children under 26) at subsidized rates. Open enrollment occurs annually in November. New hires may enroll within 30 days of their start date. The company also provides an Employee Assistance Program (EAP) offering free confidential counseling sessions — up to 6 sessions per year."
+    },
+    {
+      "id": "doc-4",
+      "title": "NovaTech Product: CloudSync Pro - Feature Overview",
+      "content": "CloudSync Pro is NovaTech's flagship cloud storage and synchronization product. It offers real-time file synchronization across unlimited devices, end-to-end AES-256 encryption, and version history for the last 90 days. The product comes in three tiers: Personal ($9.99/month, 1TB storage), Team ($24.99/month per user, 5TB shared storage), and Enterprise (custom pricing, unlimited storage with dedicated support). CloudSync Pro supports Windows, macOS, Linux, iOS, and Android. The Team and Enterprise tiers include admin controls, audit logging, and SSO integration via SAML 2.0."
+    },
+    {
+      "id": "doc-5",
+      "title": "NovaTech IT Security Requirements",
+      "content": "All NovaTech employees must comply with the following IT security requirements: Passwords must be at least 14 characters and include uppercase letters, lowercase letters, numbers, and special characters. Passwords must be changed every 90 days. Multi-factor authentication (MFA) is mandatory for all internal systems. Employees must complete the annual cybersecurity training by December 31st each year. Failure to complete training results in temporary access suspension. USB storage devices are prohibited on company equipment. All company laptops have disk encryption enabled by default."
+    },
+    {
+      "id": "doc-6",
+      "title": "NovaTech Expense Reimbursement Policy",
+      "content": "NovaTech reimburses employees for reasonable business expenses. Meals during business travel are reimbursed up to $75 per day (domestic) or $100 per day (international). Hotel accommodations are reimbursed at the government per diem rate for the travel location. Airfare must be booked in economy class unless the flight exceeds 6 hours, in which case premium economy is permitted. All expenses must be submitted within 30 days of the trip through the Expense Portal with itemized receipts. Reimbursements are processed within 10 business days of approval."
+    },
+    {
+      "id": "doc-7",
+      "title": "NovaTech Performance Review Process",
+      "content": "NovaTech conducts performance reviews on a semi-annual basis: mid-year (June) and year-end (December). Reviews are conducted through the People Platform and include self-assessment, peer feedback from at least 2 colleagues, and manager evaluation. Ratings use a 5-point scale: 1 (Needs Improvement), 2 (Below Expectations), 3 (Meets Expectations), 4 (Exceeds Expectations), 5 (Exceptional). Employees rated 4 or 5 are eligible for the annual bonus pool, which is typically 10-15% of base salary. Promotion decisions are made following the year-end review cycle. Employees rated 1 are placed on a 90-day Performance Improvement Plan (PIP)."
+    },
+    {
+      "id": "doc-8",
+      "title": "CloudSync Pro - API Documentation (v3.2)",
+      "content": "The CloudSync Pro API uses RESTful endpoints with OAuth 2.0 authentication. Base URL: https://api.cloudsync.novatech.com/v3. Rate limits: 1000 requests per minute for Team tier, 5000 for Enterprise. Key endpoints: POST /files/upload (max file size: 5GB), GET /files/{id}/versions (returns version history), DELETE /files/{id} (moves to trash, permanent deletion after 30 days), POST /shares/create (generates shareable link with optional expiry and password). All responses are in JSON format. Webhook support is available for file change events on Enterprise plans. SDKs are available for Python, JavaScript, Go, and Java."
+    },
+    {
+      "id": "doc-9",
+      "title": "NovaTech Company Holiday Calendar 2024",
+      "content": "NovaTech observes the following paid company holidays in 2024: New Year's Day (Jan 1), Martin Luther King Jr. Day (Jan 15), Presidents' Day (Feb 19), Memorial Day (May 27), Independence Day (Jul 4), Labor Day (Sep 2), Thanksgiving Day (Nov 28), Day after Thanksgiving (Nov 29), Christmas Eve (Dec 24), Christmas Day (Dec 25). Additionally, employees receive 2 floating holidays per year that may be used at their discretion. Floating holidays do not carry over and must be used within the calendar year."
+    },
+    {
+      "id": "doc-10",
+      "title": "NovaTech Data Retention Policy",
+      "content": "NovaTech retains customer data for the duration of the active subscription plus 90 days after account cancellation. During the 90-day grace period, customers may reactivate their account and recover all data. After the grace period, all customer data is permanently and irreversibly deleted from NovaTech servers and backups. For legal compliance, NovaTech retains anonymized usage analytics for 3 years. Employees handling customer data must follow the Data Classification Framework: Public, Internal, Confidential, and Restricted. All Confidential and Restricted data must be stored only in approved systems listed in the Data Systems Registry."
+    }
+  ],
+  "test_cases": [
+    {
+      "id": "tc-12-01",
+      "input": "How many days of PTO do full-time NovaTech employees receive per year?",
+      "expected_output": "22 days of paid time off per year [Doc 1]",
+      "category": "answerable",
+      "expected_source": ["doc-1"],
+      "tags": ["direct-answer", "single-doc"]
+    },
+    {
+      "id": "tc-12-02",
+      "input": "What is the price of CloudSync Pro's Team plan and what security features does it include?",
+      "expected_output": "The Team plan costs $24.99/month per user and includes admin controls, audit logging, and SSO integration via SAML 2.0 [Doc 4]. All data is protected with end-to-end AES-256 encryption [Doc 4].",
+      "category": "answerable",
+      "expected_source": ["doc-4"],
+      "tags": ["direct-answer", "single-doc"]
+    },
+    {
+      "id": "tc-12-03",
+      "input": "What is the password policy and what happens if I don't complete the cybersecurity training?",
+      "expected_output": "Passwords must be at least 14 characters with uppercase, lowercase, numbers, and special characters, changed every 90 days [Doc 5]. Failure to complete annual cybersecurity training by December 31st results in temporary access suspension [Doc 5].",
+      "category": "answerable",
+      "expected_source": ["doc-5"],
+      "tags": ["direct-answer", "single-doc"]
+    },
+    {
+      "id": "tc-12-04",
+      "input": "What is the maximum meal reimbursement for an international business trip?",
+      "expected_output": "$100 per day for international travel [Doc 6]",
+      "category": "answerable",
+      "expected_source": ["doc-6"],
+      "tags": ["direct-answer", "single-doc"]
+    },
+    {
+      "id": "tc-12-05",
+      "input": "What rating do I need to get a bonus, and how much is it?",
+      "expected_output": "Employees rated 4 (Exceeds Expectations) or 5 (Exceptional) are eligible for the annual bonus pool, which is typically 10-15% of base salary [Doc 7].",
+      "category": "answerable",
+      "expected_source": ["doc-7"],
+      "tags": ["direct-answer", "single-doc"]
+    },
+    {
+      "id": "tc-12-06",
+      "input": "I'm a new remote employee starting next month. What benefits and equipment support will I receive, and when can I start taking PTO?",
+      "expected_output": "As a new remote worker, you'll receive a one-time $500 home office stipend [Doc 2]. For health benefits, you can enroll within 30 days of your start date, with the company covering 80% of the Standard Health Plan or 65% of the Premium Health Plan [Doc 3]. You can start using accrued PTO after completing your 90-day probationary period [Doc 1].",
+      "category": "multi-doc",
+      "expected_source": ["doc-1", "doc-2", "doc-3"],
+      "tags": ["synthesis", "multi-doc"]
+    },
+    {
+      "id": "tc-12-07",
+      "input": "How does NovaTech handle data when a customer cancels their CloudSync Pro subscription, and what API endpoint would I use to delete files?",
+      "expected_output": "When a customer cancels, NovaTech retains their data for 90 days after cancellation, during which the account can be reactivated [Doc 10]. After the grace period, all data is permanently deleted from servers and backups [Doc 10]. To delete files via the API, use the DELETE /files/{id} endpoint, which moves files to trash with permanent deletion after 30 days [Doc 8].",
+      "category": "multi-doc",
+      "expected_source": ["doc-8", "doc-10"],
+      "tags": ["synthesis", "multi-doc"]
+    },
+    {
+      "id": "tc-12-08",
+      "input": "What is the total number of days off (PTO + holidays + floating) a NovaTech employee gets per year?",
+      "expected_output": "NovaTech employees receive 22 days PTO [Doc 1], 10 paid company holidays [Doc 9], and 2 floating holidays [Doc 9], for a total of 34 days off per year.",
+      "category": "multi-doc",
+      "expected_source": ["doc-1", "doc-9"],
+      "tags": ["synthesis", "multi-doc", "calculation"]
+    },
+    {
+      "id": "tc-12-09",
+      "input": "What is NovaTech's stock price today?",
+      "expected_output": "I don't know",
+      "category": "unanswerable",
+      "expected_source": [],
+      "tags": ["refusal", "out-of-scope"]
+    },
+    {
+      "id": "tc-12-10",
+      "input": "What programming language is CloudSync Pro's backend built with?",
+      "expected_output": "I don't know",
+      "category": "unanswerable",
+      "expected_source": [],
+      "tags": ["refusal", "out-of-scope"]
+    }
+  ],
+  "scoring": {
+    "methods": ["llm_judge"],
+    "pass_threshold": 0.7,
+    "dimensions": ["accuracy", "robustness"],
+    "rubric": {
+      "accuracy": "Does the answer correctly reflect the information in the documents? Are citations accurate?",
+      "robustness": "Does the model refuse to answer when information is not in the documents? Does it avoid hallucination?"
+    }
+  },
+  "constraints": {
+    "max_tokens": 1024,
+    "time_limit_seconds": null,
+    "max_attempts": null
+  }
+}

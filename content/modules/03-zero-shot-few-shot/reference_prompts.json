@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ref-03-zero-shot",
+    "tier": "0-shot",
+    "prompt": "Classify the sentiment of the following product review as exactly one of: positive, negative, or neutral.\n\nReturn ONLY the label. No explanation, no punctuation, no extra text.\n\nReview: \"{input}\"\n\nSentiment:",
+    "commentary": "Zero-shot relies entirely on the model's pre-training knowledge. It works well for obvious cases but may struggle with sarcasm, neutral statements, and edge cases. Expected accuracy: ~75-80%."
+  },
+  {
+    "id": "ref-03-one-shot",
+    "tier": "1-shot",
+    "prompt": "Classify the sentiment of product reviews as exactly one of: positive, negative, or neutral.\n\nReturn ONLY the label. No explanation.\n\nReview: \"The battery life is amazing, easily lasts two full days.\"\nSentiment: positive\n\nReview: \"{input}\"\nSentiment:",
+    "commentary": "One example teaches the model the exact output format (single word, no explanation) and gives a baseline for what 'positive' looks like. Expected accuracy: ~80-85%."
+  },
+  {
+    "id": "ref-03-three-shot",
+    "tier": "3-shot",
+    "prompt": "Classify the sentiment of product reviews as exactly one of: positive, negative, or neutral.\n\nReturn ONLY the label. No explanation.\n\nReview: \"The battery life is amazing, easily lasts two full days.\"\nSentiment: positive\n\nReview: \"Stopped working after a week. Complete disappointment.\"\nSentiment: negative\n\nReview: \"It comes in a standard brown box with the manual included.\"\nSentiment: neutral\n\nReview: \"{input}\"\nSentiment:",
+    "commentary": "Three examples cover all three categories, teaching the model the full label space. The neutral example is deliberately a plain factual statement to calibrate the boundary. Expected accuracy: ~88-92%."
+  },
+  {
+    "id": "ref-03-five-shot",
+    "tier": "5-shot",
+    "prompt": "Classify the sentiment of product reviews as exactly one of: positive, negative, or neutral.\n\nReturn ONLY the label. No explanation.\n\nReview: \"The battery life is amazing, easily lasts two full days.\"\nSentiment: positive\n\nReview: \"Stopped working after a week. Complete disappointment.\"\nSentiment: negative\n\nReview: \"It comes in a standard brown box with the manual included.\"\nSentiment: neutral\n\nReview: \"Oh sure, 'waterproof' — if you consider falling apart in light rain waterproof.\"\nSentiment: negative\n\nReview: \"Not the fanciest option out there, but it gets the job done reliably.\"\nSentiment: positive\n\nReview: \"{input}\"\nSentiment:",
+    "commentary": "Five examples add two critical edge cases: (1) sarcasm, teaching the model that sarcastic 'praise' is actually negative, and (2) a lukewarm-but-positive review, teaching the model that 'not perfect but functional' is still positive. Expected accuracy: ~92-95%."
+  }
+]

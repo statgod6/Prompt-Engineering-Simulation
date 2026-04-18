@@ -1,0 +1,136 @@
+{
+  "id": "sim-06",
+  "title": "Logic Arena",
+  "type": "fix_the_prompt",
+  "instructions": "Each test case has a math or logic problem. First, observe the result with a direct prompt (just the problem statement). Then, rewrite the prompt by adding chain-of-thought reasoning instructions. Your goal is to improve accuracy by guiding the model to reason step by step. Compare the results — you should see a dramatic improvement in correctness.",
+  "default_model": "openai/gpt-4o",
+  "allowed_models": [
+    "openai/gpt-4o",
+    "anthropic/claude-3.5-sonnet",
+    "meta-llama/llama-3-70b-instruct",
+    "google/gemini-pro",
+    "mistralai/mistral-large"
+  ],
+  "test_cases": [
+    {
+      "id": "tc-06-01",
+      "input": "A store sells notebooks for $3 each. Maria buys 4 notebooks and pays with a $20 bill. She then uses half of her change to buy stickers. How much money does Maria have left?",
+      "expected_output": "4",
+      "direct_prompt": "Answer this math problem with just the number: A store sells notebooks for $3 each. Maria buys 4 notebooks and pays with a $20 bill. She then uses half of her change to buy stickers. How much money does Maria have left?",
+      "metadata": {
+        "difficulty": "easy",
+        "type": "arithmetic",
+        "description": "Multi-step arithmetic with change and fractions"
+      }
+    },
+    {
+      "id": "tc-06-02",
+      "input": "A farmer has chickens and cows. There are 20 heads and 56 legs total. How many chickens does the farmer have?",
+      "expected_output": "12",
+      "direct_prompt": "Answer this math problem with just the number: A farmer has chickens and cows. There are 20 heads and 56 legs total. How many chickens does the farmer have?",
+      "metadata": {
+        "difficulty": "medium",
+        "type": "algebra",
+        "description": "Classic simultaneous equations word problem"
+      }
+    },
+    {
+      "id": "tc-06-03",
+      "input": "If all roses are flowers, and some flowers fade quickly, can we conclude that some roses fade quickly?",
+      "expected_output": "No",
+      "direct_prompt": "Answer Yes or No: If all roses are flowers, and some flowers fade quickly, can we conclude that some roses fade quickly?",
+      "metadata": {
+        "difficulty": "medium",
+        "type": "logic",
+        "description": "Syllogistic reasoning — tests for the undistributed middle fallacy"
+      }
+    },
+    {
+      "id": "tc-06-04",
+      "input": "A train leaves Station A at 9:00 AM traveling at 60 mph toward Station B, which is 210 miles away. Another train leaves Station B at 9:30 AM traveling at 80 mph toward Station A. At what time do they meet?",
+      "expected_output": "10:30 AM",
+      "direct_prompt": "Answer with just the time: A train leaves Station A at 9:00 AM traveling at 60 mph toward Station B, which is 210 miles away. Another train leaves Station B at 9:30 AM traveling at 80 mph toward Station A. At what time do they meet?",
+      "metadata": {
+        "difficulty": "hard",
+        "type": "arithmetic",
+        "description": "Relative motion problem with staggered start times"
+      }
+    },
+    {
+      "id": "tc-06-05",
+      "input": "Three friends split a restaurant bill. The total is $84. Alice pays twice what Bob pays, and Charlie pays $12 more than Bob. How much does each person pay?",
+      "expected_output": "Alice: $36, Bob: $18, Charlie: $30",
+      "direct_prompt": "Answer this problem: Three friends split a restaurant bill. The total is $84. Alice pays twice what Bob pays, and Charlie pays $12 more than Bob. How much does each person pay?",
+      "metadata": {
+        "difficulty": "medium",
+        "type": "algebra",
+        "description": "System of equations with three unknowns"
+      }
+    },
+    {
+      "id": "tc-06-06",
+      "input": "You have a 3-gallon jug and a 5-gallon jug. How do you measure exactly 4 gallons of water? Describe the minimum number of steps.",
+      "expected_output": "6 steps: Fill 5-gal, pour into 3-gal (leaving 2 in 5-gal), empty 3-gal, pour 2 from 5-gal into 3-gal, fill 5-gal, pour from 5-gal into 3-gal (which has 2 gal space) leaving 4 in 5-gal.",
+      "direct_prompt": "How do you measure exactly 4 gallons using a 3-gallon jug and a 5-gallon jug?",
+      "metadata": {
+        "difficulty": "hard",
+        "type": "logic",
+        "description": "Classic water jug puzzle — requires procedural reasoning"
+      }
+    },
+    {
+      "id": "tc-06-07",
+      "input": "A company's revenue grew by 20% in Year 1, declined by 10% in Year 2, and grew by 15% in Year 3. If the starting revenue was $1,000,000, what is the revenue at the end of Year 3? Is the overall growth rate more or less than 25% (20% - 10% + 15%)?",
+      "expected_output": "$1,242,000. The overall growth is 24.2%, which is less than 25%. You cannot simply add percentages because each applies to a different base.",
+      "direct_prompt": "A company's revenue grew by 20% in Year 1, declined by 10% in Year 2, and grew by 15% in Year 3. Starting revenue was $1,000,000. What is the final revenue and is the overall growth more or less than 25%?",
+      "metadata": {
+        "difficulty": "medium",
+        "type": "arithmetic",
+        "description": "Compound percentage growth — tests sequential percentage calculations"
+      }
+    },
+    {
+      "id": "tc-06-08",
+      "input": "In a room of 30 people, what is the probability that at least two people share the same birthday? Assume 365 days in a year and birthdays are uniformly distributed. Give the answer as a percentage rounded to one decimal place.",
+      "expected_output": "70.6%",
+      "direct_prompt": "What is the probability that in a room of 30 people, at least two share a birthday? Answer as a percentage.",
+      "metadata": {
+        "difficulty": "hard",
+        "type": "probability",
+        "description": "Birthday paradox — requires combinatorial reasoning"
+      }
+    },
+    {
+      "id": "tc-06-09",
+      "input": "A snail climbs a 30-foot wall. Each day it climbs 3 feet, but each night it slips back 2 feet. On what day does the snail reach the top of the wall?",
+      "expected_output": "Day 28",
+      "direct_prompt": "Answer with just the day number: A snail climbs a 30-foot wall. Each day it climbs 3 feet, but each night it slips back 2 feet. On what day does the snail reach the top?",
+      "metadata": {
+        "difficulty": "medium",
+        "type": "logic",
+        "description": "Classic trick problem — the snail doesn't slip on the final day"
+      }
+    },
+    {
+      "id": "tc-06-10",
+      "input": "Five people (A, B, C, D, E) are sitting in a row. B is not next to D. A is next to E. C is at one end. D is not at any end. How many valid arrangements are there? List them all.",
+      "expected_output": "4 arrangements: C-A-E-B-D is invalid (D at end), need to enumerate systematically. Valid: C-D-A-E-B, C-D-E-A-B, C-B-D-A-E, C-B-D-E-A, B-A-E-D-C, B-E-A-D-C, etc. The exact count requires careful enumeration.",
+      "direct_prompt": "Five people (A, B, C, D, E) sit in a row. B is not next to D. A is next to E. C is at one end. D is not at any end. How many valid arrangements exist? List them.",
+      "metadata": {
+        "difficulty": "hard",
+        "type": "combinatorics",
+        "description": "Constraint satisfaction — requires systematic enumeration with CoT"
+      }
+    }
+  ],
+  "scoring": {
+    "methods": ["exact_match", "llm_judge"],
+    "pass_threshold": 0.7,
+    "dimensions": ["accuracy", "efficiency"]
+  },
+  "constraints": {
+    "max_tokens": 1024,
+    "time_limit_seconds": null,
+    "max_attempts": null
+  }
+}

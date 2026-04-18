@@ -1,0 +1,25 @@
+{
+  "id": "sim-01",
+  "title": "The Raw Prompt Lab",
+  "type": "free_lab",
+  "instructions": "Explore how different prompts produce different outputs. Try the same prompt with temperature 0 and temperature 1. Observe how specificity affects output quality. There's no right or wrong answer — this is about building intuition.\n\nSuggested experiments:\n1. Try a vague prompt like \"Tell me about space\" at temp 0 and temp 1. Run each 3 times.\n2. Now try a specific prompt like \"List the 5 largest moons in our solar system by diameter\" at the same temperatures.\n3. Write the shortest prompt you can that still produces a useful answer.\n4. Write the same request in 3 different ways and compare outputs.\n5. Try asking a factual question vs. a creative question — how does temperature affect each?",
+  "default_model": "openai/gpt-4o",
+  "allowed_models": [
+    "openai/gpt-4o",
+    "anthropic/claude-3.5-sonnet",
+    "meta-llama/llama-3-70b-instruct",
+    "google/gemini-pro",
+    "mistralai/mistral-large"
+  ],
+  "test_cases": [],
+  "scoring": {
+    "methods": [],
+    "pass_threshold": null,
+    "dimensions": []
+  },
+  "constraints": {
+    "max_tokens": 1024,
+    "time_limit_seconds": null,
+    "max_attempts": null
+  }
+}

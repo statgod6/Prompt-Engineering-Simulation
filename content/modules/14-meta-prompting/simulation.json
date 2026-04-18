@@ -1,0 +1,96 @@
+{
+  "id": "sim-14",
+  "title": "Prompt Inception",
+  "type": "build_to_spec",
+  "instructions": "Build a meta-prompt that takes a task description and outputs an optimized prompt for that task. Your meta-prompt should generate prompts that include: (1) an appropriate expert role/persona, (2) clear and specific instructions, (3) output format specification, (4) constraints and edge case handling, and (5) examples where helpful. The generated prompt should be self-contained and ready to use. Test your meta-prompt against 5 diverse tasks spanning different domains.",
+  "default_model": "openai/gpt-4o",
+  "allowed_models": [
+    "openai/gpt-4o",
+    "anthropic/claude-3.5-sonnet",
+    "meta-llama/llama-3-70b-instruct",
+    "google/gemini-pro",
+    "mistralai/mistral-large"
+  ],
+  "test_cases": [
+    {
+      "id": "tc-14-01",
+      "input": "Write a product description for an e-commerce site",
+      "task_context": "The generated prompt should produce compelling product descriptions that highlight features, benefits, and target audience. It should handle various product types (electronics, clothing, food, etc.).",
+      "quality_rubric": {
+        "role_assignment": "Does the generated prompt assign an appropriate role (e.g., copywriter, marketing expert)?",
+        "specificity": "Does it specify tone, length, structure, and what to include (features, benefits, call-to-action)?",
+        "format_control": "Does it define the output format (heading, bullet points, paragraph structure)?",
+        "input_handling": "Does it include a placeholder for the product details to be described?",
+        "edge_cases": "Does it handle diverse product types? Does it mention avoiding exaggeration or false claims?"
+      },
+      "tags": ["creative-writing", "marketing"]
+    },
+    {
+      "id": "tc-14-02",
+      "input": "Summarize a legal contract for a non-lawyer",
+      "task_context": "The generated prompt should produce plain-language summaries of legal documents, highlighting key terms, obligations, rights, and important dates. It must avoid legal jargon and flag potentially concerning clauses.",
+      "quality_rubric": {
+        "role_assignment": "Does the generated prompt assign a legal-savvy role that can bridge legal and plain language?",
+        "specificity": "Does it instruct to simplify jargon, highlight key sections (obligations, termination, liability)?",
+        "format_control": "Does it define a structured summary format (key terms, obligations, rights, concerns)?",
+        "input_handling": "Does it include a placeholder for the contract text?",
+        "edge_cases": "Does it handle incomplete or ambiguous contracts? Does it add a disclaimer about not being legal advice?"
+      },
+      "tags": ["summarization", "legal"]
+    },
+    {
+      "id": "tc-14-03",
+      "input": "Generate test cases for a login function",
+      "task_context": "The generated prompt should produce comprehensive test cases covering happy paths, edge cases, security tests, and error handling for a software login function.",
+      "quality_rubric": {
+        "role_assignment": "Does the generated prompt assign a QA/testing expert role?",
+        "specificity": "Does it request different test categories (positive, negative, boundary, security)?",
+        "format_control": "Does it define a test case format (ID, description, steps, expected result, category)?",
+        "input_handling": "Does it include a placeholder for the function specification or requirements?",
+        "edge_cases": "Does it mention security tests (SQL injection, XSS), rate limiting, empty inputs, special characters?"
+      },
+      "tags": ["software-testing", "technical"]
+    },
+    {
+      "id": "tc-14-04",
+      "input": "Create a meal plan for someone with diabetes",
+      "task_context": "The generated prompt should produce a safe, nutritionally appropriate meal plan that considers glycemic index, carbohydrate counting, and dietary restrictions. It should include a medical disclaimer.",
+      "quality_rubric": {
+        "role_assignment": "Does the generated prompt assign a nutritionist/dietitian role?",
+        "specificity": "Does it mention glycemic index, carb counting, portion sizes, and meal timing?",
+        "format_control": "Does it define a structured meal plan format (meals per day, portions, macros)?",
+        "input_handling": "Does it include placeholders for dietary preferences, restrictions, and health details?",
+        "edge_cases": "Does it include a medical disclaimer? Does it handle food allergies and preferences?"
+      },
+      "tags": ["health", "planning"]
+    },
+    {
+      "id": "tc-14-05",
+      "input": "Write a bug report from a user complaint",
+      "task_context": "The generated prompt should transform informal user complaints into structured, actionable bug reports for a development team, including steps to reproduce, expected vs actual behavior, and severity assessment.",
+      "quality_rubric": {
+        "role_assignment": "Does the generated prompt assign a QA or support engineer role?",
+        "specificity": "Does it request structured fields (title, steps to reproduce, expected/actual behavior, environment, severity)?",
+        "format_control": "Does it define a standard bug report template?",
+        "input_handling": "Does it include a placeholder for the raw user complaint?",
+        "edge_cases": "Does it handle vague complaints? Does it ask to infer missing info or flag it as unknown?"
+      },
+      "tags": ["software-engineering", "documentation"]
+    }
+  ],
+  "scoring": {
+    "methods": ["llm_judge"],
+    "pass_threshold": 0.6,
+    "dimensions": ["accuracy", "efficiency", "consistency"],
+    "rubric": {
+      "accuracy": "Does the generated prompt effectively address the task? Would it produce high-quality output if used?",
+      "efficiency": "Is the generated prompt concise and well-structured without unnecessary verbosity?",
+      "consistency": "Does the meta-prompt produce consistently good prompts across all 5 diverse tasks?"
+    }
+  },
+  "constraints": {
+    "max_tokens": 1024,
+    "time_limit_seconds": null,
+    "max_attempts": null
+  }
+}

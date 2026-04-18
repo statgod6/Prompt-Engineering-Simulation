@@ -1,0 +1,126 @@
+{
+  "id": "sim-03",
+  "title": "The Example Ladder",
+  "type": "build_to_spec",
+  "instructions": "Build a sentiment classifier prompt. Start with zero-shot, then add 1, 3, and 5 examples. Each tier will be tested against 20 items. Goal: achieve the highest accuracy across all tiers.\n\nRules:\n1. Your prompt must classify each input as exactly one of: positive, negative, or neutral\n2. Return ONLY the label — no explanation, no punctuation, no extra text\n3. For each tier, you submit a single prompt template. The test input will be appended to your prompt.\n4. Observe how accuracy changes as you add more examples.\n\nTips:\n- Choose diverse examples that cover different types of positive, negative, and neutral statements\n- Include at least one tricky case (sarcasm, backhanded compliment) in your few-shot examples\n- Keep your formatting consistent across all examples",
+  "default_model": "openai/gpt-4o",
+  "allowed_models": [
+    "openai/gpt-4o",
+    "anthropic/claude-3.5-sonnet",
+    "meta-llama/llama-3-70b-instruct",
+    "google/gemini-pro",
+    "mistralai/mistral-large"
+  ],
+  "test_cases": [
+    {
+      "id": "tc-03-01",
+      "input": "This product completely changed my morning routine for the better!",
+      "expected_output": "positive"
+    },
+    {
+      "id": "tc-03-02",
+      "input": "Worst purchase I've ever made. Total waste of money.",
+      "expected_output": "negative"
+    },
+    {
+      "id": "tc-03-03",
+      "input": "The package arrived on Tuesday.",
+      "expected_output": "neutral"
+    },
+    {
+      "id": "tc-03-04",
+      "input": "Oh great, another software update that breaks everything. Just what I needed.",
+      "expected_output": "negative"
+    },
+    {
+      "id": "tc-03-05",
+      "input": "I've been using this for six months and it still works perfectly.",
+      "expected_output": "positive"
+    },
+    {
+      "id": "tc-03-06",
+      "input": "The color is blue and it weighs about 2 pounds.",
+      "expected_output": "neutral"
+    },
+    {
+      "id": "tc-03-07",
+      "input": "Returned it immediately. Customer support was unhelpful and rude.",
+      "expected_output": "negative"
+    },
+    {
+      "id": "tc-03-08",
+      "input": "My daughter absolutely loves this! Best birthday gift ever.",
+      "expected_output": "positive"
+    },
+    {
+      "id": "tc-03-09",
+      "input": "It does what it says on the box. Nothing more, nothing less.",
+      "expected_output": "neutral"
+    },
+    {
+      "id": "tc-03-10",
+      "input": "Sure, it works, if you enjoy spending 20 minutes figuring out the instructions.",
+      "expected_output": "negative"
+    },
+    {
+      "id": "tc-03-11",
+      "input": "Finally, a product that actually lives up to the hype!",
+      "expected_output": "positive"
+    },
+    {
+      "id": "tc-03-12",
+      "input": "Shipping took 5 business days.",
+      "expected_output": "neutral"
+    },
+    {
+      "id": "tc-03-13",
+      "input": "The build quality is cheap. Feels like it'll break any day now.",
+      "expected_output": "negative"
+    },
+    {
+      "id": "tc-03-14",
+      "input": "This exceeded all my expectations. Worth every penny and then some.",
+      "expected_output": "positive"
+    },
+    {
+      "id": "tc-03-15",
+      "input": "I ordered the medium size in gray.",
+      "expected_output": "neutral"
+    },
+    {
+      "id": "tc-03-16",
+      "input": "Wow, what a 'revolutionary' product. My grandma's version from 1995 worked better.",
+      "expected_output": "negative"
+    },
+    {
+      "id": "tc-03-17",
+      "input": "Bought this as a replacement and it fits perfectly. Very satisfied.",
+      "expected_output": "positive"
+    },
+    {
+      "id": "tc-03-18",
+      "input": "The product dimensions are 12x8x4 inches and it comes in three colors.",
+      "expected_output": "neutral"
+    },
+    {
+      "id": "tc-03-19",
+      "input": "Don't bother. Broke after two uses and the warranty is a joke.",
+      "expected_output": "negative"
+    },
+    {
+      "id": "tc-03-20",
+      "input": "I bought one for myself and then immediately ordered two more as gifts. That good.",
+      "expected_output": "positive"
+    }
+  ],
+  "scoring": {
+    "methods": ["exact_match"],
+    "pass_threshold": 0.7,
+    "dimensions": ["accuracy", "consistency"]
+  },
+  "constraints": {
+    "max_tokens": 16,
+    "time_limit_seconds": null,
+    "max_attempts": null
+  }
+}

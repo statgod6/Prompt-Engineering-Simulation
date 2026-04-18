@@ -1,0 +1,48 @@
+{
+  "module_id": "07-instruction-decomposition",
+  "simulation_id": "sim-07",
+  "reference_prompts": [
+    {
+      "id": "ref-07-step1",
+      "label": "Step 1: Company Overview Extraction",
+      "prompt": "You are a research analyst. Extract and organize key facts from the following company description into a structured overview.\n\nOutput a JSON object with these sections:\n{\n  \"company_name\": \"\",\n  \"founded\": \"\",\n  \"hq\": \"\",\n  \"employees\": 0,\n  \"industry\": \"\",\n  \"product_summary\": \"2-3 sentence description of what they do\",\n  \"key_metrics\": {\n    \"revenue_2023\": \"\",\n    \"revenue_growth_yoy\": \"\",\n    \"gross_margin\": \"\",\n    \"customers\": 0,\n    \"acv\": \"\",\n    \"nrr\": \"\"\n  },\n  \"leadership\": [{\"name\": \"\", \"role\": \"\", \"background\": \"\"}],\n  \"recent_highlights\": [\"\"]\n}\n\nCompany data:\n{{input}}",
+      "strategy": "Extracts raw data into structured JSON that subsequent steps can reliably parse. Focuses on completeness over analysis.",
+      "expected_score": 0.9
+    },
+    {
+      "id": "ref-07-step2",
+      "label": "Step 2: Financial Analysis",
+      "prompt": "You are a financial analyst. Using the company overview below, produce a detailed financial analysis.\n\nCompany Overview: {{step1_output}}\n\nAnalyze:\n1. Revenue growth trajectory and sustainability\n2. Unit economics (CAC, LTV, LTV/CAC ratio evaluation)\n3. Burn rate and runway assessment\n4. Path to profitability\n5. Key financial strengths and concerns\n\nProvide specific numbers and calculations. Rate financial health as: STRONG / MODERATE / WEAK with justification.\n\nOutput as structured text with clear section headers.",
+      "strategy": "Focused purely on financial metrics. Uses Step 1's structured output to ensure no data is missed.",
+      "expected_score": 0.85
+    },
+    {
+      "id": "ref-07-step3",
+      "label": "Step 3: Competitive Landscape",
+      "prompt": "You are a market strategy analyst. Using the company overview below, analyze the competitive landscape.\n\nCompany Overview: {{step1_output}}\n\nAnalyze:\n1. Market size (TAM) and growth rate\n2. Key competitors and their strengths/weaknesses vs this company\n3. Competitive moat — what's defensible?\n4. Market positioning (niche leader vs broad challenger)\n5. Threat assessment from each major competitor\n\nBe specific about WHY this company can or cannot defend against each competitor. Rate competitive position as: DOMINANT / STRONG / MODERATE / WEAK.\n\nOutput as structured text with clear section headers.",
+      "strategy": "Parallel-capable step that analyzes competition independently of the financial analysis.",
+      "expected_score": 0.85
+    },
+    {
+      "id": "ref-07-step4",
+      "label": "Step 4: Risk Assessment",
+      "prompt": "You are a risk analyst. Using the company overview below, produce a comprehensive risk assessment.\n\nCompany Overview: {{step1_output}}\n\nFor each risk:\n1. Describe the risk clearly\n2. Rate severity: HIGH / MEDIUM / LOW\n3. Rate likelihood: HIGH / MEDIUM / LOW\n4. Suggest a mitigant or monitoring approach\n\nCategories to assess:\n- Market/Competition risks\n- Financial risks\n- Operational risks\n- Key person risks\n- Regulatory risks\n\nAlso identify 2-3 upside risks (things that could go better than expected).\n\nOutput as a structured risk register.",
+      "strategy": "Balanced risk assessment that includes both downside risks and upside potential. The mitigant requirement forces constructive analysis.",
+      "expected_score": 0.85
+    },
+    {
+      "id": "ref-07-step5",
+      "label": "Step 5: Investment Recommendation",
+      "prompt": "You are a senior investment analyst. Synthesize the following analyses into a clear investment recommendation.\n\nFinancial Analysis: {{step2_output}}\nCompetitive Landscape: {{step3_output}}\nRisk Assessment: {{step4_output}}\n\nProvide:\n1. Investment thesis (2-3 sentences — why invest or not)\n2. Bull case (what goes right)\n3. Bear case (what goes wrong)\n4. Base case (most likely outcome)\n5. Clear recommendation: BUY / WATCH / PASS\n6. Key milestones to monitor over next 12 months\n\nBe decisive. Take a clear position backed by the data.",
+      "strategy": "Synthesis step that forces a clear decision. Requires the model to weigh competing analyses and commit to a recommendation.",
+      "expected_score": 0.85
+    },
+    {
+      "id": "ref-07-step6",
+      "label": "Step 6: Format as Investment Memo",
+      "prompt": "You are a professional writer specializing in investment documents. Compile the following analyses into a polished, professional investment memo.\n\nCompany Overview: {{step1_output}}\nFinancial Analysis: {{step2_output}}\nCompetitive Landscape: {{step3_output}}\nRisk Assessment: {{step4_output}}\nInvestment Recommendation: {{step5_output}}\n\nFormat as a professional memo with:\n- Title: \"Investment Memo: [Company Name]\"\n- Date and \"Prepared by: [Analyst Team]\"\n- Executive Summary (3-4 sentences)\n- Sections with clear ## headers\n- Key metrics in a summary table\n- Final recommendation prominently displayed\n- Professional, concise language (no filler words)\n\nKeep the total memo under 800 words. Every sentence should add value.",
+      "strategy": "Pure formatting step — no new analysis, just professional presentation. Ensures the final output is polished and cohesive.",
+      "expected_score": 0.9
+    }
+  ]
+}

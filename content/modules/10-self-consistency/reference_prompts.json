@@ -1,0 +1,37 @@
+{
+  "module_id": "10-self-consistency",
+  "prompts": [
+    {
+      "id": "ref-10-step1-generation",
+      "step": 1,
+      "name": "Generation Prompt (Step 1)",
+      "description": "Prompt used to generate multiple candidate answers. Run this 3 times at temperature 0.8.",
+      "prompt": "You are a careful problem solver. Solve the following problem step by step.\n\nIMPORTANT RULES:\n1. Show ALL your work — every calculation, every logical step\n2. Double-check your arithmetic before giving a final answer\n3. If the problem involves multiple steps, number each step clearly\n4. End with a clearly labeled final answer on its own line\n\nProblem: {{question}}\n\nSolution:\nLet me work through this step by step.\n\nStep 1:",
+      "notes": "Run this prompt 3 times with temperature=0.8 to get diverse reasoning paths. Each run may take a different approach to the same problem, which is exactly what we want."
+    },
+    {
+      "id": "ref-10-step2-verification",
+      "step": 2,
+      "name": "Verification Prompt (Step 2)",
+      "description": "Prompt that evaluates all candidate answers and selects the best one. Run at temperature 0.0.",
+      "prompt": "You are an expert evaluator. Below are 3 candidate answers to the same question. Your job is to:\n1. Carefully review each candidate's reasoning\n2. Check for mathematical errors, logical fallacies, or incorrect assumptions\n3. Determine which answer is most likely correct\n\n## Question\n{{question}}\n\n## Candidate Answer 1\n{{candidate_1}}\n\n## Candidate Answer 2\n{{candidate_2}}\n\n## Candidate Answer 3\n{{candidate_3}}\n\n## Your Evaluation\n\nFor each candidate, provide:\n- **Reasoning quality**: Is the logic sound?\n- **Calculation check**: Are all computations correct?\n- **Errors found**: List any mistakes\n\nThen output your final verdict as JSON:\n```json\n{\n  \"evaluations\": [\n    {\"candidate\": 1, \"correct\": true/false, \"errors\": [\"...\"]},\n    {\"candidate\": 2, \"correct\": true/false, \"errors\": [\"...\"]},\n    {\"candidate\": 3, \"correct\": true/false, \"errors\": [\"...\"]}\n  ],\n  \"best_candidate\": <number>,\n  \"final_answer\": \"<the correct answer>\",\n  \"confidence\": <0.0-1.0>\n}\n```",
+      "notes": "Run this at temperature=0.0 for deterministic evaluation. The structured JSON output makes it easy to programmatically extract the selected answer."
+    },
+    {
+      "id": "ref-10-step3-comparison",
+      "step": 3,
+      "name": "Ground Truth Comparison (Step 3)",
+      "description": "Prompt that compares the pipeline's selected answer against the known ground truth.",
+      "prompt": "Compare the following two answers and determine if they are equivalent.\n\n**Selected Answer:** {{selected_answer}}\n**Ground Truth:** {{ground_truth}}\n\nConsider:\n- Numerical equivalence (e.g., \"42\" and \"42.0\" are the same)\n- Semantic equivalence (e.g., \"No, we cannot conclude that\" and \"No\" mean the same thing)\n- Unit equivalence (e.g., \"48 mph\" and \"48\" are the same if units are implied)\n\nOutput JSON:\n```json\n{\n  \"match\": true/false,\n  \"reasoning\": \"why they match or don't match\",\n  \"selected_answer_normalized\": \"...\",\n  \"ground_truth_normalized\": \"...\"\n}\n```",
+      "notes": "This step handles the nuances of answer comparison. Exact string matching often fails — this prompt provides semantic comparison."
+    },
+    {
+      "id": "ref-10-majority-vote",
+      "step": null,
+      "name": "Alternative: Majority Vote Approach",
+      "description": "A simpler alternative to the verification prompt — just extract final answers and vote.",
+      "prompt": "Extract ONLY the final numerical or short answer from the following solution. Do not include units, explanations, or extra text. Output just the answer value.\n\nSolution:\n{{candidate_response}}\n\nFinal answer (value only):",
+      "notes": "Use this to extract clean answers from each candidate, then count which answer appears most often. Simpler than the full verification approach but less robust for complex reasoning tasks."
+    }
+  ]
+}

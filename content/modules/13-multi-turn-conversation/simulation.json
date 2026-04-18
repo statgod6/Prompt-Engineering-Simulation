@@ -1,0 +1,153 @@
+{
+  "id": "sim-13",
+  "title": "The Interview Bot",
+  "type": "pipeline",
+  "instructions": "Design a job interview bot that conducts a 15-turn technical interview for a software engineer position. The bot must: (1) ask relevant technical and behavioral questions, (2) follow up based on the candidate's answers rather than reading from a script, (3) track which topics have been covered and which remain, (4) adapt question difficulty based on candidate responses, and (5) produce a final structured assessment after the interview. Design your system prompt and turn management strategy to handle all 15 turns coherently.",
+  "default_model": "openai/gpt-4o",
+  "allowed_models": [
+    "openai/gpt-4o",
+    "anthropic/claude-3.5-sonnet",
+    "meta-llama/llama-3-70b-instruct",
+    "google/gemini-pro",
+    "mistralai/mistral-large"
+  ],
+  "pipeline_steps": [
+    {
+      "step": 1,
+      "name": "introduction",
+      "description": "Bot introduces itself and the interview format. Asks the candidate to introduce themselves.",
+      "turns": "1-2"
+    },
+    {
+      "step": 2,
+      "name": "background",
+      "description": "Bot asks about the candidate's work history, current role, and why they're interested in this position.",
+      "turns": "3-4"
+    },
+    {
+      "step": 3,
+      "name": "technical_assessment",
+      "description": "Bot asks technical questions about programming, system design, and problem-solving. Follows up based on answers.",
+      "turns": "5-10"
+    },
+    {
+      "step": 4,
+      "name": "behavioral_assessment",
+      "description": "Bot asks behavioral questions about teamwork, conflict resolution, and leadership.",
+      "turns": "11-13"
+    },
+    {
+      "step": 5,
+      "name": "candidate_questions_and_closing",
+      "description": "Bot invites the candidate to ask questions, then closes with next steps and produces a final assessment.",
+      "turns": "14-15"
+    }
+  ],
+  "test_cases": [
+    {
+      "id": "tc-13-01",
+      "description": "Full 15-turn simulated interview conversation",
+      "simulated_conversation": [
+        {
+          "turn": 1,
+          "role": "assistant",
+          "expected_behavior": "Greet the candidate, introduce yourself as the interviewer, explain the interview format (technical + behavioral), and ask the candidate to introduce themselves."
+        },
+        {
+          "turn": 2,
+          "role": "user",
+          "content": "Hi, thanks for having me! I'm Alex Rivera. I've been a software engineer for about 6 years. Currently I'm a senior engineer at a fintech startup where I work primarily on backend services using Python and Go. Before that I was at a mid-size e-commerce company doing full-stack work with React and Node.js."
+        },
+        {
+          "turn": 3,
+          "role": "assistant",
+          "expected_behavior": "Acknowledge Alex's background. Ask a follow-up about their current role — what kind of backend services, scale, team size."
+        },
+        {
+          "turn": 4,
+          "role": "user",
+          "content": "At my current company, I lead a team of 4 engineers. We build payment processing microservices that handle about 50,000 transactions per day. I designed the event-driven architecture using Kafka for message queuing. My biggest project was migrating our monolith to microservices over 8 months."
+        },
+        {
+          "turn": 5,
+          "role": "assistant",
+          "expected_behavior": "Transition to technical questions. Ask about the monolith-to-microservices migration — how they decided service boundaries, challenges faced."
+        },
+        {
+          "turn": 6,
+          "role": "user",
+          "content": "We used domain-driven design to identify bounded contexts. The hardest part was the payment service because it had tight coupling with the user service and the notification system. We introduced an event bus to decouple them. The trickiest bug was handling duplicate events — we had to implement idempotency keys on all payment operations."
+        },
+        {
+          "turn": 7,
+          "role": "assistant",
+          "expected_behavior": "Go deeper on technical details — ask about idempotency implementation, or pivot to system design. Show this isn't a scripted interview."
+        },
+        {
+          "turn": 8,
+          "role": "user",
+          "content": "For idempotency, we store a hash of each request with a TTL in Redis. Before processing any payment, we check if that hash exists. If it does, we return the cached response. We set the TTL to 24 hours. The challenge was deciding what fields to include in the hash — we settled on amount, recipient, and a client-generated request ID."
+        },
+        {
+          "turn": 9,
+          "role": "assistant",
+          "expected_behavior": "Ask a system design question — e.g., how would you design a rate limiter, or how would you handle the system if transactions grew to 5M/day."
+        },
+        {
+          "turn": 10,
+          "role": "user",
+          "content": "For scaling to 5M transactions per day, I'd first look at partitioning the Kafka topics by merchant ID for better parallelism. We'd need to shard the database — probably by region or merchant. I'd add a caching layer for frequently accessed merchant configs. And we'd need to move from a single Redis instance to a Redis cluster for the idempotency checks. We'd also need better observability — distributed tracing with something like Jaeger."
+        },
+        {
+          "turn": 11,
+          "role": "assistant",
+          "expected_behavior": "Transition to behavioral questions. Ask about a time they had a disagreement with a team member or had to handle a difficult situation."
+        },
+        {
+          "turn": 12,
+          "role": "user",
+          "content": "During the microservices migration, one of my team members wanted to rewrite everything in Rust for performance. I understood the appeal but it would have tripled our timeline. I set up a meeting where we benchmarked both approaches. The Go services were fast enough for our needs. I made sure to acknowledge the valid points about Rust and we agreed to consider it for future performance-critical services. The engineer felt heard and stayed motivated."
+        },
+        {
+          "turn": 13,
+          "role": "assistant",
+          "expected_behavior": "Ask about leadership or how they mentor junior engineers, since they lead a team."
+        },
+        {
+          "turn": 14,
+          "role": "user",
+          "content": "I do weekly 1-on-1s with each team member. For junior engineers, I use pair programming sessions and code reviews as teaching opportunities. I try to give them ownership of small features end-to-end rather than just bug fixes. One of my junior engineers went from needing constant guidance to independently designing and shipping a new notification service in about 6 months. That was really rewarding. Do you have questions? Actually, I have a question — what does the team structure look like for this role?"
+        },
+        {
+          "turn": 15,
+          "role": "assistant",
+          "expected_behavior": "Answer the candidate's question about team structure. Thank them for their time. Provide next steps. Then produce a final structured assessment covering technical skills, soft skills, strengths, concerns, and overall recommendation."
+        }
+      ],
+      "evaluation_criteria": {
+        "question_relevance": "Did the bot ask questions relevant to a senior software engineer position?",
+        "follow_up_quality": "Did the bot follow up on specific things the candidate mentioned (not generic questions)?",
+        "topic_coverage": "Did the bot cover: background, technical (system design, coding), behavioral, and closing?",
+        "adaptation": "Did the bot adapt to the candidate's level (went deeper when answers were strong)?",
+        "final_assessment": "Did the bot produce a structured final assessment with ratings and evidence?",
+        "conversation_flow": "Was the conversation natural, with smooth transitions between topics?",
+        "context_retention": "Did the bot reference earlier answers in later questions?"
+      }
+    }
+  ],
+  "scoring": {
+    "methods": ["llm_judge"],
+    "pass_threshold": 0.6,
+    "dimensions": ["accuracy", "consistency", "format_compliance"],
+    "rubric": {
+      "accuracy": "Are questions relevant and do follow-ups reference the candidate's actual answers?",
+      "consistency": "Does the bot maintain its interviewer persona and remember context throughout all 15 turns?",
+      "format_compliance": "Does the final assessment follow a structured format with ratings and evidence?"
+    }
+  },
+  "constraints": {
+    "max_tokens": 1024,
+    "time_limit_seconds": null,
+    "max_attempts": null
+  }
+}
